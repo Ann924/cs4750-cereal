@@ -1,0 +1,16 @@
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("ann", 15, 0.5);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("ann", 25, 3);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user1", 17, 1.5);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user2", 15, 2);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user3", 7, 8);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user4", 12, 11);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("oliver", 21, 9);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user6", 26, 2);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user7", 21, 3);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user8", 26, 1.5);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user9", 3, 8.5);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("lilian", 22, 0.5);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user13", 8, 1.5);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user15", 22, 4);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user16", 2, 2.5);
+INSERT INTO bookmarks (user_name, cereal_id, personalized_serving_size) VALUES ("user17", 2, 3);
