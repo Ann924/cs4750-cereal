@@ -1,3 +1,30 @@
+<?php 
+// if($_SERVER['REQUEST_METHOD'] == 'POST') {
+//     if(!empty($_POST['createBtn']) && ($_POST['createBtn'] == "Create cereal")) {
+//         // add to cereal_info
+//         global $db;
+//         $query = "INSERT INTO cereal_info VALUES (cereal_id=:cereal_id, name=:name,  type=:type)";
+        
+//         $statement = $db->prepare($query);
+//         $statement->bindValue(':cereal_id', "insert cerealid here");
+//         $statement->bindValue(':name', $_POST['name']);
+//         $statement->bindValue(':type', $_POST['cereal_type']);
+//         $statement->execute();
+//         $statement->closeCursor();
+
+//         // add to cereal_manufacturer
+//         global $db;
+//         $query = "INSERT INTO cereal_manufacturer VALUES (name=:name, manufacturer=:manufacturer)";
+        
+//         $statement = $db->prepare($query);
+//         $statement->bindValue(':name', $_POST['name']);
+//         $statement->bindValue(':manufacturer', $_POST['manufacturer']);
+//         $statement->execute();
+//         $statement->closeCursor();
+//     }
+// }
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +44,9 @@
                 <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereal</a>
             </div>
             <div class="col-4">
-                <span class="navbar-nav ms-auto justify-content-end">account logo goes here</span>
+                <span class="navbar-nav ms-auto justify-content-end">
+                    <i class="fa fa-user"></i>
+                </span>
             </div>
         </div>
     </nav>
@@ -42,13 +71,13 @@
                             <div class="row mb-2">
                                 <label class="">Select type</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="hot" name="cereal type" value="hot">
+                                    <input class="form-check-input" type="radio" id="hot" name="cereal_type" value="hot">
                                     <label class="form-check-label" for="hot">
                                         Hot
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="cold" name="cereal type" value="cold">
+                                    <input class="form-check-input" type="radio" id="cold" name="cereal_type" value="cold">
                                     <label class="form-check-label" for="cold">
                                         Cold
                                     </label>
