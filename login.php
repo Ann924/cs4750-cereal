@@ -1,5 +1,21 @@
 <?php
 require("connect_db.php");
+require("user_db.php");
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    // if incoming request is a post request and the button clicked is login
+    if (!empty($_POST['loginBtn'] && ($_POST['loginBtn'] == "Login"))) {
+
+        $isSuccess = check_user_validation($_POST['username'], $_POST['password']);
+        if($isSuccess){
+            echo "Congratulations, you are now logged in!";
+        }
+        else{
+            echo "There was an error logging in: please check your username or password!";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,17 +48,17 @@ require("connect_db.php");
                     <h2 class="text-center">Login</h2>
                     <i class="text-center text-secondary">Embark on your cereal journey today</i>
                 </div>
-                <form>
+                <form action="login.php" name="login" method="post">
                     <div class="row mb-3 mx-3">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="username">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="username" required/>
                     </div>
                     <div class="row mb-3 mx-3">
-                        <input type="text" class="form-control" id="password" name="password" placeholder="password">
+                        <input type="text" class="form-control" id="password" name="password" placeholder="password" required/>
                     </div>
                     <div class="row mb-3 mx-3 justify-content-center">
                         <div class="col-8">
                             <div class="row">
-                                <input type="submit" class="btn btn-primary" name="loginBtn" value="Login" title="login" />
+                                <input type="submit" class="btn btn-primary" name="loginBtn" value="Login" title="login" required/>
                             </div>
                         </div>
                     </div>
@@ -52,8 +68,7 @@ require("connect_db.php");
                     
                     <div class="col-8">
                         <div class="row">
-                            
-                            <a href="signup.html" class="btn btn-primary" name="signupBtn" title="signup">Sign up</a>
+                            <a href="signup.php" class="btn btn-primary" name="signupBtn" title="signup">Sign up</a>
                         </div>
                     </div>
                 </div>
