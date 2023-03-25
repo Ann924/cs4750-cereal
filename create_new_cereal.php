@@ -42,13 +42,13 @@
                             <div class="row mb-2">
                                 <label class="">Select type</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="cereal type" id="hot" value="hot">
+                                    <input class="form-check-input" type="radio" id="hot" name="cereal type" value="hot">
                                     <label class="form-check-label" for="hot">
                                         Hot
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="cereal type" id="cold" value="cold">
+                                    <input class="form-check-input" type="radio" id="cold" name="cereal type" value="cold">
                                     <label class="form-check-label" for="cold">
                                         Cold
                                     </label>
@@ -57,6 +57,12 @@
                             <div class="row mb-2">
                                 <label for="nutrition">Nutritional information</label>
                                 <textarea class="form-control" id="nutrition" name="nutrition" placeholder="nutritional info"></textarea>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="serving_size" name="serving size" placeholder="serving size">
+                                </div>
+                                <div class="col-6">
+
+                                </div>
                             </div>
                             <div class="row mx-3 justify-content-center">
                                 <div class="col-8">
