@@ -1,5 +1,13 @@
 <?php
+session_start();
+
 require("connect_db.php");
+
+if (!$_SESSION["loggedIn"]) {
+    header("Location: login.php");
+    die;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +30,7 @@ require("connect_db.php");
             </div>
             <div class="col-4">
                 <span class="navbar-nav ms-auto justify-content-end">account logo goes here</span>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
     </nav>

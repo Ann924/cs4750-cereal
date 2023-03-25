@@ -1,6 +1,14 @@
 <?php
+session_start();
+
 require("connect_db.php");
 require("user_db.php");
+
+if ($_SESSION["loggedIn"]) {
+    header("Location: create_new_cereal.php");
+    die;
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -10,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $isSuccess = check_user_validation($_POST['username'], $_POST['password']);
         if($isSuccess){
             echo "Congratulations, you are now logged in!";
+            header("Location: index.php");
         }
         else{
             echo "There was an error logging in: please check your username or password!";
@@ -38,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
             <div class="col-4">
                 <span class="navbar-nav ms-auto justify-content-end">account logo goes here</span>
+                <a href="logout.php">Logout</a>
             </div>
         </div>
     </nav>
