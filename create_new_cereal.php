@@ -59,13 +59,20 @@ require("connect_db.php");
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <label for="nutrition">Nutritional information</label>
-                                <textarea class="form-control" id="nutrition" name="nutrition" placeholder="nutritional info"></textarea>
+                                <label>Nutritional information</label>
                                 <div class="col-6">
-                                    <input type="text" class="form-control" id="serving_size" name="serving size" placeholder="serving size">
+                                    <input type="text" class="form-control mt-2" id="serving_size" name="serving size" placeholder="serving size">
+                                    <input type="text" class="form-control mt-2" id="calories" name="calories" placeholder="calories">
+                                    <input type="text" class="form-control mt-2" id="protein" name="protein" placeholder="protein">
+                                    <input type="text" class="form-control mt-2" id="fat" name="fat" placeholder="fat">
+                                    <input type="text" class="form-control mt-2" id="sugars" name="sugars" placeholder="sugars">
                                 </div>
                                 <div class="col-6">
-
+                                    <input type="text" class="form-control mt-2" id="vitamins" name="vitamins" placeholder="vitamins">
+                                    <input type="text" class="form-control mt-2" id="sodium" name="sodium" placeholder="sodium">
+                                    <input type="text" class="form-control mt-2" id="fiber" name="fiber" placeholder="fiber">
+                                    <input type="text" class="form-control mt-2" id="carbohydrate" name="carbohydrate" placeholder="carbohydrate">
+                                    <input type="text" class="form-control mt-2" id="potassium" name="potassium" placeholder="potassium">
                                 </div>
                             </div>
                             <div class="row mx-3 justify-content-center">
