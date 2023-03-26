@@ -43,7 +43,8 @@ if (!$_SESSION["loggedIn"]) {
     </nav>
     <div class="container-fluid">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
-            <div class="row d-flex justify-content-end"><a class="col-1 btn btn-primary" href="create_new_cereal.php">Create Cereal</a></div>
+            <div class="row d-flex justify-content-end"><a class="col-1 btn btn-primary"
+                    href="create_new_cereal.php">Create Cereal</a></div>
             <div class="col-md-8 border border-dark bg-light">
                 <?php
                 global $cereals;
@@ -57,12 +58,18 @@ if (!$_SESSION["loggedIn"]) {
                             <div class="col-8">
                                 <div class="row mb-2">
                                     <div class="card-title">
-                                        <h3><?php echo $cereal['name'] ?></h3>
+                                        <a href="#"
+                                            onclick="document.forms['cereal<?php echo $cereal['cereal_id'] ?>'].submit();">
+                                            <h3>
+                                                <?php echo $cereal['name'] ?>
+                                            </h3>
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
                                     <div>
-                                        <?php echo get_cereal_nutrition($cereal['cereal_id'])['calories'] ?> cal / serving
+                                        <?php echo get_cereal_nutrition($cereal['cereal_id'])['calories'] ?> cal /
+                                        serving
                                     </div>
                                     <div> Serving size:
                                         <?php echo get_cereal_nutrition($cereal['cereal_id'])['serving_size'] ?> oz.
@@ -71,6 +78,9 @@ if (!$_SESSION["loggedIn"]) {
                             </div>
                         </div>
                     </div>
+                    <form name="cereal<?php echo $cereal['cereal_id']; ?>" action="cereal.php" method="post">
+                        <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
+                    </form>
                 <?php endforeach; ?>
             </div>
         </div>
