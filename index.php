@@ -7,7 +7,7 @@ if(!isset($_SESSION["loggedIn"])){
   die;
 }
 else if ($_SESSION["loggedIn"]) {
-  header("Location: create_new_cereal.php");
+  header("Location: cereals.php");
   die;
 } else {
   header("Location: login.php");

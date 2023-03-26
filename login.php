@@ -5,7 +5,7 @@ require("connect_db.php");
 require("user_db.php");
 
 if ($_SESSION["loggedIn"]) {
-    header("Location: create_new_cereal.php");
+    header("Location: cereals.php");
     die;
 }
 
