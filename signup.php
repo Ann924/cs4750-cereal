@@ -1,5 +1,25 @@
 <?php
 require("connect_db.php");
+require("user_db.php");
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    // if incoming request is a post request and the button clicked is signup
+    if (!empty($_POST['signupBtn'] && ($_POST['signupBtn'] == "Sign up"))) {
+
+        $isSuccess = add_user_validation($_POST['email'], $_POST['password']);
+        if($isSuccess){
+            $isSuccess = add_user_information($_POST['username'], $_POST['email']);
+        }
+
+        if($isSuccess){
+            echo "Congratulations, you are now logged in!";
+        }
+        else{
+            echo "There was an error logging in: please ensure your email and username are unique!";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,15 +52,15 @@ require("connect_db.php");
                     <h2 class="text-center">Sign up</h2>
                     <i class="text-center text-secondary">Embark on your cereal journey today</i>
                 </div>
-                <form>
+                <form action="signup.php" method="post">
                     <div class="row mb-3 mx-3">
-                        <input type="text" class="form-control" id="email" name="email" placeholder="email">
+                        <input type="text" class="form-control" id="email" name="email" placeholder="email" required>
                     </div>
                     <div class="row mb-3 mx-3">
-                        <input type="text" class="form-control" id="username" name="username" placeholder="username">
+                        <input type="text" class="form-control" id="username" name="username" placeholder="username" required>
                     </div>
                     <div class="row mb-3 mx-3">
-                        <input type="text" class="form-control" id="password" name="password" placeholder="password">
+                        <input type="text" class="form-control" id="password" name="password" placeholder="password" required>
                     </div>
                     <div class="row mb-3 mx-3 justify-content-center">
                         <div class="col-8">
