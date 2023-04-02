@@ -36,6 +36,9 @@ function check_user_validation($user_name, $input_password){
 
     // check passwords match
     $_SESSION["loggedIn"] = password_verify($input_password, $user_password);
+    if ($_SESSION["loggedIn"]){
+        $_SESSION["user_name"] = $user_name;
+    }
     return $_SESSION["loggedIn"];
 
 }

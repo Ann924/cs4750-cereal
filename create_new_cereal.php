@@ -2,12 +2,27 @@
 session_start();
 
 require("connect_db.php");
+require("create_cereal_db.php");
 
 if (!$_SESSION["loggedIn"]) {
     header("Location: login.php");
     die;
 }
 
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(!empty($_POST['createBtn']) && ($_POST['createBtn'] == "Create cereal")) {
+        // gets new cereal_id and current date
+        $cereal_id = getCerealId() + 1;
+        $date = date('Y-m-d');
+
+        addManufacturer($_POST['name'], $_POST['manufacturer']);
+        addCerealInfo($cereal_id, $_POST['name'], $_POST['cereal_type']);
+        addCreatesCereal($cereal_id, $date);
+        addNutritionInfo($cereal_id, $_POST['serving_size'], $_POST['calories'], $_POST['protein'], $_POST['fat'], $_POST['sugars'], $_POST['vitamins'], $_POST['sodium'], $_POST['fiber'], $_POST['carbohydrate'], $_POST['potassium']);
+
+        header("Location: index.php");
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +52,7 @@ if (!$_SESSION["loggedIn"]) {
     <div class="container-fluid">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="col-md-8 border border-dark bg-light">
-                <form>
+                <form action="create_new_cereal.php" method="post">
                     <div class="row mt-3 mb-3 mx-3 justify-content-center font-weight-bold">
                         <div class="col-4">
                             <div class="row mb-2">Display photo:</div>
