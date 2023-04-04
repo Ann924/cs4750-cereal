@@ -1,6 +1,13 @@
 <?php
+session_start();
+
 require("connect_db.php");
 require("user_db.php");
+
+if ($_SESSION["loggedIn"]) {
+    header("Location: cereals.php");
+    die;
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -14,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if($isSuccess){
             echo "Congratulations, you are now logged in!";
+            header("Location: cereals.php");
         }
         else{
             echo "There was an error logging in: please ensure your email and username are unique!";

@@ -21,7 +21,6 @@ if (!$_SESSION["loggedIn"]) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Lilian Zhang">
     <meta name="description" content="project">
 
     <title>Cereals</title>

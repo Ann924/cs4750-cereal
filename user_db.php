@@ -64,6 +64,13 @@ function add_user_information($user_name, $email)
         $statement->closeCursor();
     }
 
+    if($success){
+        $_SESSION["loggedIn"] = True;
+        if ($_SESSION["loggedIn"]){
+            $_SESSION["user_name"] = $user_name;
+        }
+    }
+
     return $success;
 
 }
