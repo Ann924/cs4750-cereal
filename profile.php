@@ -3,14 +3,17 @@ session_start();
 
 require("connect_db.php");
 require("user_db.php");
+require("cereal_db.php");
 
 $user_email = null;
+$user_bookmarks = null;
 
 if (!$_SESSION["loggedIn"]) {
     header("Location: login.php");
     die;
 } else {
     $user_email = get_user_email($_SESSION['user_name']);
+    $user_bookmarks = get_all_bookmarks();
 }
 
 ?>
@@ -33,7 +36,7 @@ if (!$_SESSION["loggedIn"]) {
     <?php
     include "common_navbar.php";
     ?>
-    <div class="container-fluid mx-auto">
+    <div class="container-fluid mx-auto mb-5">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="card col-md-10 d-flex border border-dark bg-light">
                 <h3 class="row mt-3 justify-content-center text-center">Information</h3>
@@ -61,11 +64,40 @@ if (!$_SESSION["loggedIn"]) {
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="card col-md-10 d-flex border border-dark bg-light">
                 <h3 class="row mt-3 justify-content-center text-center">Bookmarks</h3>
-                <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
-                    <div class="card-body">
-                        PLACEHOLDER
+                <?php
+                global $user_bookmarks;
+                foreach ($user_bookmarks as $bookmark): ?>
+                    <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
+                        <div class="card-body row">
+                            <div class="col-4">
+                                <div class="row mb-2">Display photo:</div>
+                                <div class="row mb-2">Photo goes here</div>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-title row mb-2">
+                                    <a class="col" href="#"
+                                        onclick="document.forms['cereal<?php echo $bookmark['cereal_id'] ?>'].submit();">
+                                        <h3>
+                                            <?php echo get_cereal_info($bookmark['cereal_id'])['name'] ?>
+                                        </h3>
+                                    </a>
+                                </div>
+                                <div class="row mb-2">
+                                    <div>
+                                        <?php echo get_cereal_nutrition($bookmark['cereal_id'])['calories']*$bookmark['personalized_serving_size']/get_cereal_nutrition($bookmark['cereal_id'])['serving_size'] ?> cal /
+                                        personal serving
+                                    </div>
+                                    <div> Personalized serving size:
+                                        <?php echo $bookmark['personalized_serving_size'] ?> oz.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                    <form name="cereal<?php echo $bookmark['cereal_id']; ?>" action="cereal.php" method="post">
+                        <input type="hidden" name="cereal_id" value="<?php echo $bookmark['cereal_id']; ?>" />
+                    </form>
+                <?php endforeach ?>
             </div>
         </div>
 
