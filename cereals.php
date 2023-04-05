@@ -29,17 +29,9 @@ if (!$_SESSION["loggedIn"]) {
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark">
-        <div class="container-fluid">
-            <div class="col-4"><a href="logout.php">Logout</a></div>
-            <div class="col-4 justify-content-center">
-                <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereals</a>
-            </div>
-            <div class="col-4">
-                <span class="navbar-nav ms-auto justify-content-end">account logo goes here</span>
-            </div>
-        </div>
-    </nav>
+    <?php
+    include "common_navbar.php";
+    ?>
     <div class="container-fluid">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="row d-flex justify-content-end"><a class="col-1 btn btn-primary"

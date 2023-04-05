@@ -4,9 +4,11 @@ session_start();
 $cereal_info = null;
 $cereal_manufacturer = null;
 $cereal_nutrition = null;
+$comments = null;
 
 require("connect_db.php");
 require("cereal_db.php");
+require("comment_db.php");
 
 if (!$_SESSION["loggedIn"]) {
     header("Location: login.php");
@@ -15,6 +17,19 @@ if (!$_SESSION["loggedIn"]) {
     $cereal_info = get_cereal_info($_POST['cereal_id']);
     $cereal_manufacturer = get_cereal_manufacturer($cereal_info['name']);
     $cereal_nutrition = get_cereal_nutrition($_POST['cereal_id']);
+    $comments = get_all_comments($_POST['cereal_id']);
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!empty($_POST['createBtn']) && ($_POST['createBtn'] == "Add Comment")) {
+        // gets current date
+        $date = date('Y-m-d');
+        $success = add_comment($_POST['cereal_id'], $_POST['comment_text'], $date);
+        if (!$success) {
+            echo "Failed to add new comment: you cannot submit more than one comment per cereal.";
+        }
+        $comments = get_all_comments($_POST['cereal_id']);
+    }
 }
 
 ?>
@@ -28,31 +43,24 @@ if (!$_SESSION["loggedIn"]) {
     <meta name="description" content="project">
 
     <title>
-        <?php echo $cereal_info['name'] ?>
+        Cereal
     </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark">
-        <div class="container-fluid">
-            <div class="col-4"><a href="logout.php">Logout</a></div>
-            <div class="col-4 justify-content-center">
-                <a href="cereals.php" class="navbar-brand navbar-nav mx-auto justify-content-center">Cereals</a>
-            </div>
-            <div class="col-4">
-                <span class="navbar-nav ms-auto justify-content-end">account logo goes here</span>
-            </div>
-        </div>
-    </nav>
-    <div class="container-fluid">
+    <?php
+    include "common_navbar.php";
+    ?>
+    <div class="container-fluid mx-auto">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
-            <h3 class="text-center">
-                <?php echo $cereal_info['name'] ?>
-            </h3>
             <div class="card col-md-8 border border-dark bg-light">
                 <div class="card-body">
+                    <h2 class="text-center" style="text-transform: uppercase;">
+                        <?php echo $cereal_info['name'] ?>
+                    </h2>
+                    <hr>
                     <div class="row">
                         <h5>Manufacturer:
                             <?php echo $cereal_manufacturer['manufacturer'] ?>
@@ -100,6 +108,47 @@ if (!$_SESSION["loggedIn"]) {
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row mt-3 d-flex justify-content-center">
+            <div class="card col-md-8 border border-dark bg-light mb-5">
+                <h3 class="text-center mt-3" style="text-transform: uppercase;">Comments</h3>
+                <hr>
+                <div class="row">
+                    <div class="d-flex justify-content-end">
+                        <form action="cereal.php" method="post">
+                            <input id="comment_text" name="comment_text" placeholder="Enter comment here" maxlength=150
+                                size=100 />
+                            <input type="hidden" name="cereal_id" value="<?php echo $cereal_info['cereal_id']; ?>" />
+                            <input type="submit" class="btn border" name="createBtn" value="Add Comment"
+                                title="Add Comment" style="background-color:white;" />
+                        </form>
+                    </div>
+                </div>
+                <?php
+                global $comments;
+                foreach ($comments as $comment): ?>
+                    <div class="row align-items-center">
+                        <div class="col-1">
+                            <div class="row"><i class="d-flex justify-content-center far fa-user-circle"
+                                    style='font-size:48px;'></i></div>
+                            <div class="row">
+                                <p class="d-flex justify-content-center">
+                                    <?php echo $comment['user_name'] ?>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row align-items-center card mt-3 mb-3 mx-3 justify-content-center font-weight-bold">
+                                <div class="card-body">
+                                    <p>
+                                        <?php echo $comment['text'] ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
