@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             required />
                     </div>
                     <div class="row mb-3 mx-3">
-                        <input type="text" class="form-control" id="password" name="password" placeholder="password"
+                        <input type="password" class="form-control" id="password" name="password" placeholder="password"
                             required />
                     </div>
                     <div class="row mb-3 mx-3 justify-content-center">

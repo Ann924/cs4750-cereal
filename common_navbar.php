@@ -11,9 +11,9 @@
             </a>
         </div>
         <div class="col-4">
-            <span class="navbar-nav ms-auto justify-content-end">
+            <a href="profile.php" class="navbar-nav ms-auto justify-content-end" style="text-decoration:none;">
                 <i class="d-flex justify-content-center far fa-user-circle" style='font-size:24px;'></i>
-            </span>
+            </a>
         </div>
     </div>
 </nav>
