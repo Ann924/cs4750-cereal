@@ -21,8 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if($isSuccess){
             echo "Congratulations, you are now logged in!";
-            header("Location: cereals.php", true, 301);
-            exit;
+            header("Location: cereals.php");
         }
         else{
             echo "There was an error logging in: please ensure your email and username are unique!";
