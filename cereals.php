@@ -3,6 +3,7 @@ session_start();
 
 require("connect_db.php");
 require("cereal_db.php");
+require("sorting_cereals_db.php");
 
 $cereals = null;
 
@@ -11,6 +12,16 @@ if (!$_SESSION["loggedIn"]) {
     die;
 } else {
     $cereals = get_all_cereals();
+}
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(!empty($_POST['cerealQuery']) && ($_POST['cerealQuery'] == "Search")) {
+        $cereals = get_by_query($_POST['cereal_query']);
+    }
+
+    if(!empty($_POST['sortMostUpvotes']) && ($_POST['sortMostUpvotes'] == "Most Upvotes")) {
+        $cereals = get_most_upvotes();
+    }
 }
 
 ?>
@@ -41,9 +52,28 @@ if (!$_SESSION["loggedIn"]) {
         </div>
     </nav>
     <div class="container-fluid">
-        <div class="row mt-3 d-flex justify-content-center align-items-center">
+        <div class="row mt-3 d-flex justify-content-center">
             <div class="row d-flex justify-content-end"><a class="col-1 btn btn-primary"
                     href="create_new_cereal.php">Create Cereal</a></div>
+            <div class="col">
+                <div class="row border border-dark bg-light mx-2 p-4">
+                    <h4>Search/Filter</h4>
+                    <form action="cereals.php" method="post">
+                        <div class="input-group">
+                            <input class="mx-2" type="text" name="cereal_query"/>
+                            <input type="submit" name="cerealQuery" value="Search"/>
+                        </div>
+                    </form>
+                    <form action="cereals.php" method="post">
+                        <input type="submit" name="sortMostUpvotes" value="Most Upvotes"/>
+                    </form>
+                    <button class="my-2">Most Calories</button>
+                    <button class="my-2">Hot</button>
+                    <button class="my-2">Cold</button>
+                    <button class="my-2">Most Protein</button>
+                    <button class="my-2">Most Fat</button>
+                </div>
+            </div>
             <div class="col-md-8 border border-dark bg-light">
                 <?php
                 global $cereals;

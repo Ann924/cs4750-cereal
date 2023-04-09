@@ -4,6 +4,14 @@
 
         // find email from user_information
         $query = "SELECT * FROM cereal_info";
+        // $query = "WITH num_upvotes AS
+        //     (SELECT cereal_id, SUM(upvote_cnt+downvote_cnt) FROM
+        //         (
+        //             (SELECT cereal_id, COUNT(*) AS upvote_cnt FROM vote WHERE vote_value = 1 GROUP BY cereal_id) as A
+        //             JOIN
+        //             (SELECT cereal_id, COUNT(*) AS downvote_cnt FROM vote WHERE vote_value = -1 GROUP BY cereal_id)
+        //         )
+        //     ) SELECT * FROM cereal_info JOIN num_upvotes";
         $statement = $db->prepare($query);
         $statement->execute();
     
