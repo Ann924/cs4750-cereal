@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">  
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Lilian Zhang">
+    <meta name="author">
     <meta name="description" content="project">  
         
     <title>Login</title>
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereal</a>
             </div>
             <div class="col-4">
-                <span class="navbar-nav ms-auto justify-content-end">account logo goes here</span>
+                <span class="navbar-nav ms-auto justify-content-end">account logo goes here yay</span>
                 <a href="logout.php">Logout</a>
             </div>
         </div>

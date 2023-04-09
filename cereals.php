@@ -36,7 +36,7 @@ if (!$_SESSION["loggedIn"]) {
                 <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereals</a>
             </div>
             <div class="col-4">
-                <span class="navbar-nav ms-auto justify-content-end">account logo goes here</span>
+            <a href="profile.php" class="navbar-nav ms-auto justify-content-end">account logo goes here yay <?php echo $_SESSION["user_name"] ?></a>
             </div>
         </div>
     </nav>
