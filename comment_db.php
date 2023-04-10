@@ -1,5 +1,7 @@
 <?php
 
+require_once('club_db.php');
+
 function get_all_comments($cereal_id)
 {
     global $db;
@@ -55,6 +57,11 @@ function add_comment($cereal_id, $comment_text, $comment_date)
     }
     finally{
         $statement->closeCursor();
+    }
+
+    // add score to relevant clubs
+    if($success){
+        $success = update_user_club_activity($_SESSION['user_name'], "COMMENT");
     }
 
     return $success;
