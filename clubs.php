@@ -26,21 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // if incoming request is a post request and the form is the join club form
     // if (!empty($_POST['join_club_btn'])) { how do i check this?
     //     echo "join club";
-    if(!check_if_user_in_club($_SESSION["user_name"], $_POST['club_id'])) {
+    if (!check_if_user_in_club($_SESSION["user_name"], $_POST['club_id'])) {
         $isSuccess = join_club($_SESSION["user_name"], $_POST['club_id']);
-        if($isSuccess){
+        if ($isSuccess) {
             echo "Congratulations, you have joined the club:";
             echo $_POST['club_id'];
             // header("Location: index.php");
-        }
-        else{
+        } else {
             echo "There was an error joining the club";
         }
-    }
-    else {
+    } else {
         echo "You have already joined this club";
     }
-        
+
     // }
 }
 
@@ -48,71 +46,72 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">  
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Lilian Zhang">
-    <meta name="description" content="project">  
-        
+    <meta name="description" content="project">
+
     <title>Clubs</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark">
-        <div class="container-fluid">
-            <div class="col-4"><a href="logout.php">Logout</a></div>
-            <div class="col-4 justify-content-center">
-                <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereals</a>
-            </div>
-            <div class="col-4">
-            <a href="profile.php" class="navbar-nav ms-auto justify-content-end">account logo goes here yay <?php echo $_SESSION["user_name"] ?></a>
-            </div>
-        </div>
-    </nav>
+    <?php
+    include "common_navbar.php";
+    ?>
     <div class="container-fluid">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <h3 class="text-center">
                 Clubs
             </h3>
             <?php
-                global $clubs;
-                global $user_clubs;
-                foreach ($clubs as $club): ?>
+            global $clubs;
+            global $user_clubs;
+            foreach ($clubs as $club): ?>
 
-            <?php
+                <?php
                 // echo "here";
                 // echo array_search($club, $user_clubs);
                 // if(array_search($club, $user_clubs)) {
                 //     echo "user is already in this club";
                 // }
-            ?>
-            <a href="#"
-                onclick="document.forms['club<?php echo $club['club_id'] ?>'].submit();">
-                <h3>
-                <?php echo $club['club_title'] ?>
-                </h3>
-                
-            </a>
-            <h2><?php echo $club['club_description'] ?></h2>
-            <h2><?php echo $club['num_members'] ?> members</h2> 
-            <h2><?php echo $club['club_score'] ?> points</h2> 
+                ?>
+                <a href="#" onclick="document.forms['club<?php echo $club['club_id'] ?>'].submit();">
+                    <h3>
+                        <?php echo $club['club_title'] ?>
+                    </h3>
 
-            <button name="join_club_btn"
-                onclick="document.forms['join_club<?php echo $club['club_id'] ?>'].submit();">
-                <h3>
-                    Join <?php echo $club['club_title'] ?>
-                </h3>
-            </button>
+                </a>
+                <h2>
+                    <?php echo $club['club_description'] ?>
+                </h2>
+                <h2>
+                    <?php echo $club['num_members'] ?> members
+                </h2>
+                <h2>
+                    <?php echo $club['club_score'] ?> points
+                </h2>
 
-            <form name="club<?php echo $club['club_id']; ?>" action="club.php" method="post">
-                <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
-            </form>
+                <button name="join_club_btn" onclick="document.forms['join_club<?php echo $club['club_id'] ?>'].submit();">
+                    <h3>
+                        Join
+                        <?php echo $club['club_title'] ?>
+                    </h3>
+                </button>
 
-            <form name="join_club<?php echo $club['club_id'] ?>" action="clubs.php" method="post">
-                <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
-            </form>
+                <form name="club<?php echo $club['club_id']; ?>" action="club.php" method="post">
+                    <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
+                </form>
+
+                <form name="join_club<?php echo $club['club_id'] ?>" action="clubs.php" method="post">
+                    <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
+                </form>
             <?php endforeach; ?>
         </div>
     </div>
 </body>
+
 </html>
