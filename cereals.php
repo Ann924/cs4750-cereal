@@ -13,6 +13,17 @@ if (!$_SESSION["loggedIn"]) {
     $cereals = get_all_cereals();
 }
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!empty($_POST['createBtn']) && ($_POST['createBtn'] == "Bookmark Cereal")) {
+        if(!add_cereal_bookmark($_POST['cereal_id'], $_POST['personalized_serving_size'])){
+            echo "Failed to bookmark cereal: please visit your profile page to check that you have not already bookmarked it.";
+        }
+        else{
+            echo "Successfully bookmarked cereal!";
+        }
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -26,20 +37,22 @@ if (!$_SESSION["loggedIn"]) {
     <title>Cereals</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark">
-        <div class="container-fluid">
-            <div class="col-4"><a href="logout.php">Logout</a></div>
-            <div class="col-4 justify-content-center">
-                <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereals</a>
-            </div>
-            <div class="col-4">
-            <a href="profile.php" class="navbar-nav ms-auto justify-content-end">account logo goes here yay <?php echo $_SESSION["user_name"] ?></a>
-            </div>
-        </div>
-    </nav>
+    <?php
+    include "common_navbar.php";
+    ?>
     <div class="container-fluid">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="row d-flex justify-content-end"><a class="col-1 btn btn-primary"
@@ -55,14 +68,20 @@ if (!$_SESSION["loggedIn"]) {
                                 <div class="row mb-2">Photo goes here</div>
                             </div>
                             <div class="col-8">
-                                <div class="row mb-2">
-                                    <div class="card-title">
-                                        <a href="#"
-                                            onclick="document.forms['cereal<?php echo $cereal['cereal_id'] ?>'].submit();">
-                                            <h3>
-                                                <?php echo $cereal['name'] ?>
-                                            </h3>
-                                        </a>
+                                <div class="card-title row mb-2">
+                                    <a class="col" href="#"
+                                        onclick="document.forms['cereal<?php echo $cereal['cereal_id'] ?>'].submit();">
+                                        <h3>
+                                            <?php echo $cereal['name'] ?>
+                                        </h3>
+                                    </a>
+                                    <div class="col-1">
+                                        <!--a href="#"
+                                            onclick="document.forms['bookmark<?php echo $cereal['cereal_id'] ?>'].submit();">
+                                            <i class="far fa-bookmark"></i>
+                                        </a-->
+                                        <i type="button" class="far fa-bookmark" data-toggle="modal"
+                                            data-target="#bookmarkModal<?php echo $cereal['cereal_id'] ?>"></i>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -79,6 +98,33 @@ if (!$_SESSION["loggedIn"]) {
                     </div>
                     <form name="cereal<?php echo $cereal['cereal_id']; ?>" action="cereal.php" method="post">
                         <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
+                    </form>
+                    <form name="bookmark<?php echo $cereal['cereal_id']; ?>" action="cereals.php" method="POST">
+                        <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
+                        <div class="modal fade" id="bookmarkModal<?php echo $cereal['cereal_id'] ?>" tabindex="-1"
+                            role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Bookmark
+                                            <?php echo $cereal['name']; ?>
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label>Personalized Serving Size: </label>
+                                        <input name="personalized_serving_size"
+                                            value="<?php echo get_cereal_nutrition($cereal['cereal_id'])['serving_size']; ?>" /> oz.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" name="createBtn" value="Bookmark Cereal" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 <?php endforeach; ?>
             </div>

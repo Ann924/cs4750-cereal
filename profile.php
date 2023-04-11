@@ -1,104 +1,117 @@
 <?php
 session_start();
 
-$user_clubs = null;
-
 require("connect_db.php");
 require("user_db.php");
-require("club_db.php");
+require("cereal_db.php");
+
+$user_email = null;
+$user_bookmarks = null;
 
 if (!$_SESSION["loggedIn"]) {
     header("Location: login.php");
     die;
 } else {
-    $user_clubs = get_clubs_by_user($_SESSION["user_name"]);
+    $user_email = get_user_email($_SESSION['user_name']);
+    $user_bookmarks = get_all_bookmarks();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo "post request";
-    echo $_POST['club_id'];
-    // if incoming request is a post request and the form is the join club form
-    // if (!empty($_POST['join_club_btn'])) { how do i check this?
-    //     echo "join club";
-        $isSuccess = leave_club($_SESSION["user_name"], $_POST['club_id']);
-        if($isSuccess){
-            echo "Congratulations, you have left club:";
-            echo $_POST['club_id'];
-            // header("Location: index.php");
-            $user_clubs = get_clubs_by_user($_SESSION["user_name"]);
-        }
-        else{
-            echo "There was an error leaving the club";
-        }
-    // }
-}
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="UTF-8">  
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Lilian Zhang">
-    <meta name="description" content="project">  
-        
-    <title>Profile</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <meta name="description" content="project">
+    <title>
+        Cereal
+    </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
+
 <body>
-    Welcome to your profile, <?php echo $_SESSION["user_name"] ?>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark">
-        <div class="container-fluid">
-            <div class="col-4"><a href="logout.php">Logout</a></div>
-            <div class="col-4 justify-content-center">
-                <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereals</a>
-            </div>
-            <div class="col-4">
-            <a href="profile.php" class="navbar-nav ms-auto justify-content-end">account logo goes here yay <?php echo $_SESSION["user_name"] ?></a>
-            </div>
-        </div>
-    </nav>
-    <div class="container-fluid">
+    <?php
+    include "common_navbar.php";
+    ?>
+    <div class="container-fluid mx-auto mb-5">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
-            <h3 class="text-center">
-                Welcome to your profile, <?php echo $_SESSION["user_name"] ?>
-            </h3>
-            <div class="card col-md-8 border border-dark bg-light">
-                <div class="card-header">
-                    Clubs
-                </div>
-                <div class="card-body">
-                    <?php
-                        global $user_clubs;
-                        foreach ($user_clubs as $club): ?>
-                            <a href="#"
-                        onclick="document.forms['club<?php echo $club['club_id'] ?>'].submit();">
-                        <h3>
-                        <?php echo $club['club_title'] ?>
-                        </h3>
-                    </a>
-                    <h2><?php echo $club['club_description'] ?></h2>
-                    <h2><?php echo $club['num_members'] ?> members</h2> 
-                    <h2><?php echo $club['club_score'] ?> points</h2> 
-
-                    <button name="leave_club_btn"
-                        onclick="document.forms['leave_club<?php echo $club['club_id'] ?>'].submit();">
-                        <h3>
-                            Leave <?php echo $club['club_title'] ?>
-                        </h3>
-                    </button>
-
-                    <form name="club<?php echo $club['club_id']; ?>" action="club.php" method="post">
-                        <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
-                    </form>
-
-                    <form name="leave_club<?php echo $club['club_id'] ?>" action="profile.php" method="post">
-                        <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
-                    </form>
-                    <?php endforeach; ?>
+            <div class="card col-md-10 d-flex border border-dark bg-light">
+                <h3 class="row mt-3 justify-content-center text-center">Information</h3>
+                <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
+                    <div class="row card-body">
+                        <div class="col">
+                            <div class="row">Username:
+                                <?php echo $_SESSION['user_name']; ?>
+                            </div>
+                            <div class="row">Email:
+                                <?php echo $user_email; ?>
+                            </div>
+                            <div class="row">Date Joined: PLACEHOLDER</div>
+                        </div>
+                        <div class="col">
+                            <div class="row">From: PLACEHOLDER</div>
+                            <div class="row">Favorite Cereal: PLACEHOLDER</div>
+                            <div class="row">Fun Fact: PLACEHOLDER</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="row mt-3 d-flex justify-content-center align-items-center">
+            <div class="card col-md-10 d-flex border border-dark bg-light">
+                <h3 class="row mt-3 justify-content-center text-center">Bookmarks</h3>
+                <?php
+                global $user_bookmarks;
+                foreach ($user_bookmarks as $bookmark): ?>
+                    <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
+                        <div class="card-body row">
+                            <div class="col-4">
+                                <div class="row mb-2">Display photo:</div>
+                                <div class="row mb-2">Photo goes here</div>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-title row mb-2">
+                                    <a class="col" href="#"
+                                        onclick="document.forms['cereal<?php echo $bookmark['cereal_id'] ?>'].submit();">
+                                        <h3>
+                                            <?php echo get_cereal_info($bookmark['cereal_id'])['name'] ?>
+                                        </h3>
+                                    </a>
+                                </div>
+                                <div class="row mb-2">
+                                    <div>
+                                        <?php echo get_cereal_nutrition($bookmark['cereal_id'])['calories']*$bookmark['personalized_serving_size']/get_cereal_nutrition($bookmark['cereal_id'])['serving_size'] ?> cal /
+                                        personal serving
+                                    </div>
+                                    <div> Personalized serving size:
+                                        <?php echo $bookmark['personalized_serving_size'] ?> oz.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form name="cereal<?php echo $bookmark['cereal_id']; ?>" action="cereal.php" method="post">
+                        <input type="hidden" name="cereal_id" value="<?php echo $bookmark['cereal_id']; ?>" />
+                    </form>
+                <?php endforeach ?>
+            </div>
+        </div>
+
+        <div class="row mt-3 d-flex justify-content-center align-items-center">
+            <div class="card col-md-10 d-flex border border-dark bg-light">
+                <h3 class="row mt-3 justify-content-center text-center">Clubs</h3>
+                <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
+                    <div class="card-body">
+                        PLACEHOLDER
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>

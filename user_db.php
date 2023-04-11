@@ -1,7 +1,6 @@
 <?php
 
-function check_user_validation($user_name, $input_password){
-
+function get_user_email($user_name){
     global $db; //use global db from connect-db.php
 
     // find email from user_information
@@ -18,6 +17,17 @@ function check_user_validation($user_name, $input_password){
     }
 
     $email = $email['email'];
+    return $email;
+}
+
+function check_user_validation($user_name, $input_password){
+
+    global $db; //use global db from connect-db.php
+
+    $email = get_user_email($user_name);
+    if(!$email){
+        return False;
+    }
 
     // find password from user_validation given email
     $query = "SELECT password FROM user_validation WHERE email = :email";
