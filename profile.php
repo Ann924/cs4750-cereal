@@ -114,5 +114,4 @@ if (!$_SESSION["loggedIn"]) {
 
     </div>
 </body>
-
 </html>
