@@ -26,6 +26,24 @@
         return $club_info;
     }
 
+    function check_if_user_in_club($user_name, $club_id) {
+        global $db; //use global db from connect-db.php
+
+        $query = "SELECT * FROM joins_club WHERE user_name=:user_name AND club_id=:club_id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':user_name', $user_name);
+        $statement->bindValue(':club_id', $club_id);
+        
+        $success = $statement->execute();
+
+        if($statement->fetch()) {
+            echo "user is in club";
+            return TRUE;
+        }
+        echo "user is not in club";
+        return FALSE;
+    }
+
     function join_club($user_name, $club_id) {
         global $db; //use global db from connect-db.php
 

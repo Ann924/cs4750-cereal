@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // if incoming request is a post request and the form is the join club form
     // if (!empty($_POST['join_club_btn'])) { how do i check this?
     //     echo "join club";
+    if(!check_if_user_in_club($_SESSION["user_name"], $_POST['club_id'])) {
         $isSuccess = join_club($_SESSION["user_name"], $_POST['club_id']);
         if($isSuccess){
             echo "Congratulations, you have joined the club:";
@@ -35,6 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         else{
             echo "There was an error joining the club";
         }
+    }
+    else {
+        echo "You have already joined this club";
+    }
+        
     // }
 }
 
