@@ -71,9 +71,9 @@
         $statement->bindValue(':cereal_id', $cereal_id);
         $statement->execute();
     
-        $cereal_nutrition = $statement->fetch();
+        $cereal_upvotes = $statement->fetch();
         $statement->closeCursor();
-        return $cereal_nutrition;
+        return $cereal_upvotes;
     }
 
     function get_cereal_downvotes($cereal_id){
@@ -85,8 +85,38 @@
         $statement->bindValue(':cereal_id', $cereal_id);
         $statement->execute();
     
-        $cereal_nutrition = $statement->fetch();
+        $cereal_downvotes = $statement->fetch();
         $statement->closeCursor();
-        return $cereal_nutrition;
+        return $cereal_downvotes;
+    }
+
+    function vote_cereal($cereal_id, $vote_value) {
+        global $db; //use global db from connect-db.php
+        
+        // check whether cereal has been upvoted/downvoted before
+        $query = "SELECT * FROM vote WHERE user_name = :user_name AND cereal_id = :cereal_id;";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':user_name', $_SESSION["user_name"]);
+        $statement->bindValue(':cereal_id', $cereal_id);
+        $statement->execute();
+    
+        if ($statement->rowCount() > 0) {
+            $query = "UPDATE vote SET vote_value = :vote_value WHERE user_name = :user_name AND cereal_id = :cereal_id;";
+            $statement = $db->prepare($query);
+            $statement->bindValue(':user_name', $_SESSION["user_name"]);
+            $statement->bindValue(':cereal_id', $cereal_id);
+            $statement->bindValue(':vote_value', $vote_value);
+            $statement->execute();
+            $statement->closeCursor();
+        } else {
+            $query = "INSERT INTO vote VALUES (:user_name, :cereal_id, :vote_value);";
+            $statement = $db->prepare($query);
+            $statement->bindValue(':user_name', $_SESSION["user_name"]);
+            $statement->bindValue(':cereal_id', $cereal_id);
+            $statement->bindValue(':vote_value', $vote_value);
+            $statement->execute();
+            $statement->closeCursor();
+        }
+        $statement->closeCursor();
     }
 ?>

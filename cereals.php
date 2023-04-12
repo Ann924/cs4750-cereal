@@ -60,7 +60,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     if(!empty($_POST['upvoteBtn']) && ($_POST['upvoteBtn'] == "Upvote")) {
-        
+        vote_cereal($_POST['vote_cereal_id'], 1);
+    }
+
+    if(!empty($_POST['downvoteBtn']) && ($_POST['downvoteBtn'] == "Downvote")) {
+        vote_cereal($_POST['vote_cereal_id'], -1);
     }
 }
 
@@ -164,13 +168,16 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div>
                                         Upvotes: <?php echo get_cereal_upvotes($cereal['cereal_id'])['upvote_cnt'] ?>
                                         <form action="cereals.php" method="post">
-                                            <p><?php echo $cereal['cereal_id'] ?></p>
+                                            <input type="hidden" name="vote_cereal_id" value="<?php echo $cereal['cereal_id'] ?>"/>
                                             <input type="submit" name="upvoteBtn" value="Upvote"/>
                                         </form>
                                     </div>
                                     <div>
                                         Downvotes: <?php echo get_cereal_downvotes($cereal['cereal_id'])['downvote_cnt'] ?>
-
+                                        <form action="cereals.php" method="post">
+                                            <input type="hidden" name="vote_cereal_id" value="<?php echo $cereal['cereal_id'] ?>"/>
+                                            <input type="submit" name="downvoteBtn" value="Downvote"/>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
