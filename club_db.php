@@ -108,4 +108,24 @@
         return $clubs;
     }
 
+    function get_club_creator($club_id) {
+        global $db; //use global db from connect-db.php
+
+        // echo $club_id;
+
+        $query = "SELECT user_name FROM creates_club WHERE club_id=:club_id";
+        $statement = $db->prepare($query);
+        $statement->bindValue(':club_id', $club_id);
+        $statement->execute();
+
+        $creator = $statement->fetchColumn();
+
+        // foreach($creator as $c) {
+        //     echo $c;
+        // }
+
+        $statement->closeCursor();
+        return $creator;
+    }
+
 ?>

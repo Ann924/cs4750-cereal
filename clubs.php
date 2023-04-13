@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Congratulations, you have joined the club:";
             echo $_POST['club_id'];
             // header("Location: index.php");
+            $clubs = get_all_clubs(); // to update num_members after joining club
         }
         else{
             echo "There was an error joining the club";
@@ -58,22 +59,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark">
-        <div class="container-fluid">
-            <div class="col-4"><a href="logout.php">Logout</a></div>
-            <div class="col-4 justify-content-center">
-                <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereals</a>
-            </div>
-            <div class="col-4">
-            <a href="profile.php" class="navbar-nav ms-auto justify-content-end">account logo goes here yay <?php echo $_SESSION["user_name"] ?></a>
-            </div>
-        </div>
-    </nav>
+    <?php
+    include "common_navbar.php";
+    ?>
     <div class="container-fluid">
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <h3 class="text-center">
                 Clubs
             </h3>
+            <div class="row d-flex justify-content-end">
+                <a class="col-1 btn btn-primary" href="create_new_club.php">Create Club</a>
+            </div>
             <?php
                 global $clubs;
                 global $user_clubs;
