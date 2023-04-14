@@ -6,7 +6,7 @@ function get_all_bookmarks()
 {
     global $db; //use global db from connect-db.php
 
-    $query = "SELECT * FROM bookmarks WHERE user_name = :user_name";
+    $query = "SELECT * FROM bookmarks NATURAL JOIN cereal_info WHERE user_name = :user_name";
     $statement = $db->prepare($query);
     $statement->bindValue(':user_name', $_SESSION['user_name']);
     $statement->execute();
@@ -14,6 +14,21 @@ function get_all_bookmarks()
     $bookmarks = $statement->fetchAll();
     $statement->closeCursor();
     return $bookmarks;
+}
+
+function get_bookmark($cereal_id)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "SELECT personalized_serving_size FROM bookmarks WHERE user_name = :user_name AND cereal_id = :cereal_id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':user_name', $_SESSION['user_name']);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+
+    $bookmark = $statement->fetch();
+    $statement->closeCursor();
+    return $bookmark;
 }
 
 function add_cereal_bookmark($cereal_id, $serving_size)
@@ -39,6 +54,19 @@ function add_cereal_bookmark($cereal_id, $serving_size)
     }
 
     return $success;
+}
+
+function update_bookmark_serving($cereal_id, $serving_size)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "UPDATE bookmarks SET personalized_serving_size = :serving_size WHERE user_name = :user_name AND cereal_id = :cereal_id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':user_name', $_SESSION['user_name']);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->bindValue(':serving_size', $serving_size);
+    $statement->execute();
+    $statement->closeCursor();
 }
 
 function get_all_cereals()
