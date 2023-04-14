@@ -15,10 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $cereal_id = getCerealId() + 1;
         $date = date('Y-m-d');
 
-        addManufacturer($_POST['name'], $_POST['manufacturer']);
-        addCerealInfo($cereal_id, $_POST['name'], $_POST['cereal_type']);
-        addCreatesCereal($cereal_id, $date);
-        addNutritionInfo($cereal_id, $_POST['serving_size'], $_POST['calories'], $_POST['protein'], $_POST['fat'], $_POST['sugars'], $_POST['vitamins'], $_POST['sodium'], $_POST['fiber'], $_POST['carbohydrate'], $_POST['potassium']);
+        addCereal($_POST['name'], $_POST['manufacturer'], $cereal_id, $_POST['cereal_type'], $date, $_POST['serving_size'], $_POST['calories'], $_POST['protein'], $_POST['fat'], $_POST['sugars'], $_POST['vitamins'], $_POST['sodium'], $_POST['fiber'], $_POST['carbohydrate'], $_POST['potassium']);
+
+        //addManufacturer($_POST['name'], $_POST['manufacturer']);
+        //addCerealInfo($cereal_id, $_POST['name'], $_POST['cereal_type']);
+        //addCreatesCereal($cereal_id, $date);
+        //addNutritionInfo($cereal_id, $_POST['serving_size'], $_POST['calories'], $_POST['protein'], $_POST['fat'], $_POST['sugars'], $_POST['vitamins'], $_POST['sodium'], $_POST['fiber'], $_POST['carbohydrate'], $_POST['potassium']);
 
         header("Location: index.php");
     }

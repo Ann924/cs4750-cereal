@@ -1,5 +1,7 @@
 <?php
 
+require_once('club_db.php');
+
 function getCerealId()
 {
     global $db;
@@ -11,6 +13,16 @@ function getCerealId()
     $statement->closeCursor();
 
     return $cereal_id;
+}
+
+function addCereal($name, $manufacturer, $cereal_id, $type, $date, $serving_size, $calories, $protein, $fat, $sugars, $vitamins, $sodium, $fiber, $carbohydrate, $potassium){
+
+    addManufacturer($name, $manufacturer);
+    addCerealInfo($cereal_id, $name, $type);
+    addCreatesCereal($cereal_id, $date);
+    addNutritionInfo($cereal_id, $serving_size, $calories, $protein, $fat, $sugars, $vitamins, $sodium, $fiber, $carbohydrate, $potassium);
+
+    $success = update_user_club_activity($_SESSION['user_name'], "CREATE");
 }
 
 function addCerealInfo($cereal_id, $name, $type)

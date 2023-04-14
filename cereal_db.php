@@ -1,5 +1,7 @@
 <?php
 
+require_once('club_db.php');
+
 function get_all_bookmarks()
 {
     global $db; //use global db from connect-db.php
@@ -30,6 +32,12 @@ function add_cereal_bookmark($cereal_id, $serving_size)
     } finally{
         $statement->closeCursor();
     }
+
+    // add score to relevant clubs
+    if($success){
+        $success = update_user_club_activity($_SESSION['user_name'], "BOOKMARK");
+    }
+
     return $success;
 }
 
