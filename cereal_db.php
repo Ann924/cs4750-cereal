@@ -69,6 +69,18 @@ function update_bookmark_serving($cereal_id, $serving_size)
     $statement->closeCursor();
 }
 
+function delete_bookmark($cereal_id)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "DELETE FROM bookmarks WHERE user_name = :user_name AND cereal_id = :cereal_id;";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':user_name', $_SESSION['user_name']);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
 function get_all_cereals()
 {
     global $db; //use global db from connect-db.php

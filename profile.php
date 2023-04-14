@@ -20,8 +20,13 @@ if (!$_SESSION["loggedIn"]) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (!empty($_POST['editBtn']) && ($_POST['editBtn'] == "Edit Bookmark")) {
+    if (!empty($_POST['editBookmarkBtn']) && ($_POST['editBookmarkBtn'] == "Edit Bookmark")) {
         update_bookmark_serving($_POST['cereal_id'], $_POST['personalized_serving_size']);
+    }
+
+    if (!empty($_POST['deleteBookmarkBtn']) && ($_POST['deleteBookmarkBtn'] == "Delete Bookmark")) {
+        delete_bookmark($_POST['cereal_id']);
+        header("Location: profile.php"); // reload page so new list of bookmarks can be fetched
     }
 
     echo "post request";
@@ -108,8 +113,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </h3>
                                     </a>
                                     <div class="col-1">
-                                        <i type="button" class="far fa-bookmark" data-toggle="modal"
-                                            data-target="#bookmarkModal<?php echo $bookmark['cereal_id'] ?>"></i>
+                                        <i type="button" class="fas fa-edit" data-toggle="modal"
+                                            data-target="#editBookmarkModal<?php echo $bookmark['cereal_id'] ?>"></i>
+                                    </div>
+                                    <div class="col-1">
+                                        <i type="button" class="fa fa-trash" data-toggle="modal"
+                                            data-target="#deleteBookmarkModal<?php echo $bookmark['cereal_id'] ?>"></i>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -128,14 +137,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <form name="cereal<?php echo $bookmark['cereal_id']; ?>" action="cereal.php" method="post">
                         <input type="hidden" name="cereal_id" value="<?php echo $bookmark['cereal_id']; ?>" />
                     </form>
-                    <form name="bookmark<?php echo $bookmark['cereal_id']; ?>" action="profile.php" method="POST">
+                    <form name="editBookmark<?php echo $bookmark['cereal_id']; ?>" action="profile.php" method="POST">
                         <input type="hidden" name="cereal_id" value="<?php echo $bookmark['cereal_id']; ?>" />
-                        <div class="modal fade" id="bookmarkModal<?php echo $bookmark['cereal_id'] ?>" tabindex="-1"
+                        <div class="modal fade" id="editBookmarkModal<?php echo $bookmark['cereal_id'] ?>" tabindex="-1"
                             role="dialog">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Bookmark
+                                        <h5 class="modal-title">Edit Bookmark
                                             <?php echo $bookmark['name']; ?>
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -150,8 +159,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                        <button type="submit" name="editBtn" value="Edit Bookmark"
+                                        <button type="submit" name="editBookmarkBtn" value="Edit Bookmark"
                                             class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form name="deleteBookmark<?php echo $bookmark['cereal_id']; ?>" action="profile.php" method="POST">
+                        <input type="hidden" name="cereal_id" value="<?php echo $bookmark['cereal_id']; ?>" />
+                        <div class="modal fade" id="deleteBookmarkModal<?php echo $bookmark['cereal_id'] ?>" tabindex="-1"
+                            role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">
+                                            Are you sure you want to unbookmark
+                                            <?php echo $bookmark['name']; ?>?
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="deleteBookmarkBtn" value="Delete Bookmark"
+                                        class="btn btn-danger">Yes</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                                     </div>
                                 </div>
                             </div>
