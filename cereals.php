@@ -168,6 +168,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                 </div>
                                 <div class="row justify-content-end">
+                                    <div class="col-sm-2">
                                     <form action="cereals.php" method="post">
                                         <input type="hidden" name="vote_cereal_id" value="<?php echo $cereal['cereal_id'] ?>"/>
                                         <button type="submit" name="upvoteBtn" value="Upvote" class="btn">
@@ -175,7 +176,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </button>
                                         <?php echo get_cereal_upvotes($cereal['cereal_id'])['upvote_cnt'] ?>
                                     </form>
+                                    </div>
 
+                                    <div class="col-sm-2">
                                     <form action="cereals.php" method="post">
                                         <input type="hidden" name="vote_cereal_id" value="<?php echo $cereal['cereal_id'] ?>"/>
                                         <button type="submit" name="downvoteBtn" value="Downvote" class="btn">
@@ -183,6 +186,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </button>
                                         <?php echo get_cereal_downvotes($cereal['cereal_id'])['downvote_cnt'] ?>
                                     </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
