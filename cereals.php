@@ -15,6 +15,14 @@ if (!$_SESSION["loggedIn"]) {
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!empty($_POST['createBtn']) && ($_POST['createBtn'] == "Bookmark Cereal")) {
+        if (!add_cereal_bookmark($_POST['cereal_id'], $_POST['personalized_serving_size'])) {
+            echo "Failed to bookmark cereal: please visit your profile page to check that you have not already bookmarked it.";
+        } else {
+            echo "Successfully bookmarked cereal!";
+        }
+    }
+
     if(!empty($_POST['cerealQuery']) && ($_POST['cerealQuery'] == "Search")) {
         $cereals = filter_by_query($_POST['cereal_query']);
     }
@@ -85,22 +93,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-dark">
-        <div class="container-fluid">
-            <div class="col-4"><a href="logout.php">Logout</a></div>
-            <div class="col-4 justify-content-center">
-                <a class="navbar-brand navbar-nav mx-auto justify-content-center">Cereals</a>
-            </div>
-            <div class="col-4">
-                <span class="navbar-nav ms-auto justify-content-end">account logo goes here</span>
-            </div>
-        </div>
-    </nav>
+
+    <?php
+    include "common_navbar.php";
+    ?>
+
     <div class="container-fluid">
-        <div class="row mt-3 d-flex justify-content-center">
-            <div class="row d-flex justify-content-end"><a class="col-1 btn btn-primary"
+        <div class="row mt-3 d-flex justify-content-center align-items-center">
+            <div class="row d-flex justify-content-end mt-3"><a class="col-3 btn btn-primary"
                     href="create_new_cereal.php">Create Cereal</a></div>
-            <div class="col">
+            <div class="row d-flex justify-content-end mt-3"><a class="col-3 btn btn-primary"
+                    href="clubs.php">Browse Cereal Clubs</a></div>
+            <div class="col-md-8 border border-dark bg-light mt-3">
                 <div class="row border border-dark bg-light mx-2 p-4">
                     <h4>Search/Filter</h4>
                     <form action="cereals.php" method="post">
@@ -148,14 +152,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <div class="row mb-2">Photo goes here</div>
                             </div>
                             <div class="col-8">
-                                <div class="row mb-2">
-                                    <div class="card-title">
-                                        <a href="#"
-                                            onclick="document.forms['cereal<?php echo $cereal['cereal_id'] ?>'].submit();">
-                                            <h3>
-                                                <?php echo $cereal['name'] ?>
-                                            </h3>
-                                        </a>
+                                <div class="card-title row mb-2">
+                                    <a class="col" href="#"
+                                        onclick="document.forms['cereal<?php echo $cereal['cereal_id'] ?>'].submit();">
+                                        <h3>
+                                            <?php echo $cereal['name'] ?>
+                                        </h3>
+                                    </a>
+                                    <div class="col-1">
+                                        <!--a href="#"
+                                            onclick="document.forms['bookmark<?php echo $cereal['cereal_id'] ?>'].submit();">
+                                            <i class="far fa-bookmark"></i>
+                                        </a-->
+                                        <i type="button" class="far fa-bookmark" data-toggle="modal"
+                                            data-target="#bookmarkModal<?php echo $cereal['cereal_id'] ?>"></i>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -193,6 +203,35 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <form name="cereal<?php echo $cereal['cereal_id']; ?>" action="cereal.php" method="post">
                         <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
+                    </form>
+                    <form name="bookmark<?php echo $cereal['cereal_id']; ?>" action="cereals.php" method="POST">
+                        <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
+                        <div class="modal fade" id="bookmarkModal<?php echo $cereal['cereal_id'] ?>" tabindex="-1"
+                            role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Bookmark
+                                            <?php echo $cereal['name']; ?>
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label>Personalized Serving Size: </label>
+                                        <input name="personalized_serving_size"
+                                            value="<?php echo get_cereal_nutrition($cereal['cereal_id'])['serving_size']; ?>" />
+                                        oz.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" name="createBtn" value="Bookmark Cereal"
+                                            class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 <?php endforeach; ?>
             </div>
