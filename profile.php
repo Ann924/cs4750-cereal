@@ -20,6 +20,15 @@ if (!$_SESSION["loggedIn"]) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (!empty($_POST['editBookmarkBtn']) && ($_POST['editBookmarkBtn'] == "Edit Bookmark")) {
+        update_bookmark_serving($_POST['cereal_id'], $_POST['personalized_serving_size']);
+    }
+
+    if (!empty($_POST['deleteBookmarkBtn']) && ($_POST['deleteBookmarkBtn'] == "Delete Bookmark")) {
+        delete_bookmark($_POST['cereal_id']);
+        header("Location: profile.php"); // reload page so new list of bookmarks can be fetched
+    }
+
     echo "post request";
     echo $_POST['club_id'];
     // if incoming request is a post request and the form is the join club form
@@ -35,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "There was an error leaving the club";
     }
     // }
+
 }
 
 ?>
@@ -102,6 +112,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             <?php echo get_cereal_info($bookmark['cereal_id'])['name'] ?>
                                         </h3>
                                     </a>
+                                    <div class="col-1">
+                                        <i type="button" class="fas fa-edit" data-toggle="modal"
+                                            data-target="#editBookmarkModal<?php echo $bookmark['cereal_id'] ?>"></i>
+                                    </div>
+                                    <div class="col-1">
+                                        <i type="button" class="fa fa-trash" data-toggle="modal"
+                                            data-target="#deleteBookmarkModal<?php echo $bookmark['cereal_id'] ?>"></i>
+                                    </div>
                                 </div>
                                 <div class="row mb-2">
                                     <div>
@@ -110,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         personal serving
                                     </div>
                                     <div> Personalized serving size:
-                                        <?php echo $bookmark['personalized_serving_size'] ?> oz.
+                                        <?php echo get_bookmark($bookmark['cereal_id'])["personalized_serving_size"]; ?> oz.
                                     </div>
                                 </div>
                             </div>
@@ -118,6 +136,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <form name="cereal<?php echo $bookmark['cereal_id']; ?>" action="cereal.php" method="post">
                         <input type="hidden" name="cereal_id" value="<?php echo $bookmark['cereal_id']; ?>" />
+                    </form>
+                    <form name="editBookmark<?php echo $bookmark['cereal_id']; ?>" action="profile.php" method="POST">
+                        <input type="hidden" name="cereal_id" value="<?php echo $bookmark['cereal_id']; ?>" />
+                        <div class="modal fade" id="editBookmarkModal<?php echo $bookmark['cereal_id'] ?>" tabindex="-1"
+                            role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Bookmark
+                                            <?php echo $bookmark['name']; ?>
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label>Personalized Serving Size: </label>
+                                        <input name="personalized_serving_size"
+                                            value="<?php echo get_bookmark($bookmark['cereal_id'])["personalized_serving_size"]; ?>" />
+                                        oz.
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" name="editBookmarkBtn" value="Edit Bookmark"
+                                            class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form name="deleteBookmark<?php echo $bookmark['cereal_id']; ?>" action="profile.php" method="POST">
+                        <input type="hidden" name="cereal_id" value="<?php echo $bookmark['cereal_id']; ?>" />
+                        <div class="modal fade" id="deleteBookmarkModal<?php echo $bookmark['cereal_id'] ?>" tabindex="-1"
+                            role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">
+                                            Are you sure you want to unbookmark
+                                            <?php echo $bookmark['name']; ?>?
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="deleteBookmarkBtn" value="Delete Bookmark"
+                                        class="btn btn-danger">Yes</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 <?php endforeach ?>
             </div>

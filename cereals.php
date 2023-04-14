@@ -3,6 +3,7 @@ session_start();
 
 require("connect_db.php");
 require("cereal_db.php");
+require("sorting_cereals_db.php");
 
 $cereals = null;
 
@@ -13,13 +14,65 @@ if (!$_SESSION["loggedIn"]) {
     $cereals = get_all_cereals();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($_POST['createBtn']) && ($_POST['createBtn'] == "Bookmark Cereal")) {
         if (!add_cereal_bookmark($_POST['cereal_id'], $_POST['personalized_serving_size'])) {
             echo "Failed to bookmark cereal: please visit your profile page to check that you have not already bookmarked it.";
         } else {
             echo "Successfully bookmarked cereal!";
         }
+    }
+
+    if(!empty($_POST['cerealQuery']) && ($_POST['cerealQuery'] == "Search")) {
+        $cereals = filter_by_query($_POST['cereal_query']);
+    }
+
+    if(!empty($_POST['sortVotes']) && ($_POST['sortVotes'] == "Votes")) {
+        if (isset($_POST['sortVoteOrd'])){
+            $cereals = sort_by_votes(True);
+        } else {
+            $cereals = sort_by_votes(False);
+        }
+    }
+
+    if(!empty($_POST['sortCalories']) && ($_POST['sortCalories'] == "Calories")) {
+        if (isset($_POST['sortCaloriesOrd'])){
+            $cereals = sort_by_calories(True);
+        } else {
+            $cereals = sort_by_calories(False);
+        }
+    }
+
+    if(!empty($_POST['sortProtein']) && ($_POST['sortProtein'] == "Protein")) {
+        if (isset($_POST['sortProteinOrd'])){
+            $cereals = sort_by_protein(True);
+        } else {
+            $cereals = sort_by_protein(False);
+        }
+    }
+
+    if(!empty($_POST['sortFat']) && ($_POST['sortFat'] == "Fat")) {
+        if (isset($_POST['sortFatOrd'])){
+            $cereals = sort_by_fat(True);
+        } else {
+            $cereals = sort_by_fat(False);
+        }
+    }
+
+    if(!empty($_POST['filterHot']) && ($_POST['filterHot'] == "Hot")) {
+        $cereals = filter_cereal_type('H');
+    }
+
+    if(!empty($_POST['filterCold']) && ($_POST['filterCold'] == "Cold")) {
+        $cereals = filter_cereal_type('C');
+    }
+    
+    if(!empty($_POST['upvoteBtn']) && ($_POST['upvoteBtn'] == "Upvote")) {
+        vote_cereal($_POST['vote_cereal_id'], 1);
+    }
+
+    if(!empty($_POST['downvoteBtn']) && ($_POST['downvoteBtn'] == "Downvote")) {
+        vote_cereal($_POST['vote_cereal_id'], -1);
     }
 }
 
@@ -46,12 +99,49 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ?>
 
     <div class="container-fluid">
-        <div class="row mt-3 d-flex justify-content-center align-items-center">
+        <div class="row mt-3 d-flex justify-content-center">
             <div class="row d-flex justify-content-end mt-3"><a class="col-3 btn btn-primary"
                     href="create_new_cereal.php">Create Cereal</a></div>
             <div class="row d-flex justify-content-end mt-3"><a class="col-3 btn btn-primary"
                     href="clubs.php">Browse Cereal Clubs</a></div>
-            <div class="col-md-8 border border-dark bg-light mt-3">
+            <div class="col">
+                <div class="row border border-dark bg-light mx-2 p-4">
+                    <h4>Search/Filter</h4>
+                    <form action="cereals.php" method="post">
+                        <div class="input-group">
+                            <input class="mx-2" type="text" name="cereal_query"/>
+                            <input type="submit" name="cerealQuery" value="Search"/>
+                        </div>
+                    </form>
+                    <form action="cereals.php" method="post">
+                        <label>Ascending?</label>
+                        <input type="checkbox" name="sortVoteOrd" value="Asc"/>
+                        <input type="submit" name="sortVotes" value="Votes"/>
+                    </form>
+                    <form action="cereals.php" method="post">
+                        <label>Ascending?</label>
+                        <input type="checkbox" name="sortCaloriesOrd" value="Asc"/>
+                        <input type="submit" name="sortCalories" value="Calories"/>
+                    </form>
+                    <form action="cereals.php" method="post">
+                        <label>Ascending?</label>
+                        <input type="checkbox" name="sortProteinOrd" value="Asc"/>
+                        <input type="submit" name="sortProtein" value="Protein"/>
+                    </form>
+                    <form action="cereals.php" method="post">
+                        <label>Ascending?</label>
+                        <input type="checkbox" name="sortFatOrd" value="Asc"/>
+                        <input type="submit" name="sortFat" value="Fat"/>
+                    </form>
+                    <form action="cereals.php" method="post">
+                        <input type="submit" name="filterHot" value="Hot"/>
+                    </form>
+                    <form action="cereals.php" method="post">
+                        <input type="submit" name="filterCold" value="Cold"/>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-8 border border-dark bg-light">
                 <?php
                 global $cereals;
                 foreach ($cereals as $cereal): ?>
@@ -85,6 +175,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                     <div> Serving size:
                                         <?php echo get_cereal_nutrition($cereal['cereal_id'])['serving_size'] ?> oz.
+                                    </div>
+                                </div>
+                                <div class="row justify-content-end">
+                                    <div class="col-sm-2">
+                                    <form action="cereals.php" method="post">
+                                        <input type="hidden" name="vote_cereal_id" value="<?php echo $cereal['cereal_id'] ?>"/>
+                                        <button type="submit" name="upvoteBtn" value="Upvote" class="btn">
+                                            <i class="far fa-thumbs-up"></i>
+                                        </button>
+                                        <?php echo get_cereal_upvotes($cereal['cereal_id'])['upvote_cnt'] ?>
+                                    </form>
+                                    </div>
+
+                                    <div class="col-sm-2">
+                                    <form action="cereals.php" method="post">
+                                        <input type="hidden" name="vote_cereal_id" value="<?php echo $cereal['cereal_id'] ?>"/>
+                                        <button type="submit" name="downvoteBtn" value="Downvote" class="btn">
+                                            <i class="far fa-thumbs-down"></i>
+                                        </button>
+                                        <?php echo get_cereal_downvotes($cereal['cereal_id'])['downvote_cnt'] ?>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
