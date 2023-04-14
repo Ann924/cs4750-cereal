@@ -99,12 +99,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     ?>
 
     <div class="container-fluid">
-        <div class="row mt-3 d-flex justify-content-center align-items-center">
+        <div class="row mt-3 d-flex justify-content-center">
             <div class="row d-flex justify-content-end mt-3"><a class="col-3 btn btn-primary"
                     href="create_new_cereal.php">Create Cereal</a></div>
             <div class="row d-flex justify-content-end mt-3"><a class="col-3 btn btn-primary"
                     href="clubs.php">Browse Cereal Clubs</a></div>
-            <div class="col-md-8 border border-dark bg-light mt-3">
+            <div class="col">
                 <div class="row border border-dark bg-light mx-2 p-4">
                     <h4>Search/Filter</h4>
                     <form action="cereals.php" method="post">
