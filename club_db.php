@@ -163,6 +163,26 @@ function leave_club($user_name, $club_id)
     return $success;
 }
 
+function get_club_creator($club_id) {
+    global $db; //use global db from connect-db.php
+
+    // echo $club_id;
+
+    $query = "SELECT user_name FROM creates_club WHERE club_id=:club_id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':club_id', $club_id);
+    $statement->execute();
+
+    $creator = $statement->fetchColumn();
+
+    // foreach($creator as $c) {
+    //     echo $c;
+    // }
+
+    $statement->closeCursor();
+    return $creator;
+}
+
 function get_clubs_by_user($user_name)
 {
     global $db; //use global db from connect-db.php
@@ -184,6 +204,20 @@ function get_clubs_by_user($user_name)
 
     $statement->closeCursor();
     return $clubs;
+}
+
+function get_users_in_club($club_id){
+    global $db; //use global db from connect-db.php
+
+    $query = "SELECT user_name FROM joins_club WHERE club_id=:club_id";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':club_id', $club_id);
+    $statement->execute();
+
+    $users = $statement->fetchAll();
+
+    $statement->closeCursor();
+    return $users;
 }
 
 ?>

@@ -32,7 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo "Congratulations, you have joined the club:";
             echo $_POST['club_id'];
             // header("Location: index.php");
-        } else {
+            $clubs = get_all_clubs(); // to update num_members after joining club
+        }
+        else {
             echo "There was an error joining the club";
         }
     } else {
@@ -67,8 +69,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <h3 class="text-center">
                 Clubs
             </h3>
-            <div class="col-md-8 border border-dark bg-light">
-                <?php
+            <div class="row d-flex justify-content-end">
+                <a class="col-1 btn btn-primary" href="create_new_club.php">Create Club</a>
+            </div>
+            <?php
                 global $clubs;
                 global $user_clubs;
                 foreach ($clubs as $club): ?>

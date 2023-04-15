@@ -2,6 +2,8 @@
 session_start();
 
 $club_info = null;
+$club_creator = null;
+$users = null;
 
 require("connect_db.php");
 require("user_db.php");
@@ -12,6 +14,14 @@ if (!$_SESSION["loggedIn"]) {
     die;
 } else {
     $club_info = get_club_info($_POST['club_id']);
+    $club_creator = get_club_creator($club_info['club_id']);
+    $users = get_users_in_club($club_info['club_id']);
+    if($_SESSION['user_name'] == $club_creator) {
+        echo "you created this club";
+    }
+    else {
+        echo "you did not create this club";
+    }
 }
 
 ?>
@@ -39,15 +49,41 @@ if (!$_SESSION["loggedIn"]) {
             <h3 class="text-center">
                 <?php echo $club_info['club_title'] ?>
             </h3>
-            <h2>
-                <?php echo $club_info['club_description'] ?>
-            </h2>
-            <h2>
-                <?php echo $club_info['num_members'] ?> members
-            </h2>
-            <h2>
-                <?php echo $club_info['club_score'] ?> points
-            </h2>
+            <h2>Created by: <?php echo $club_creator ?></h2>
+            
+            <h2><?php echo $club_info['club_description'] ?></h2>
+            <h2><?php echo $club_info['num_members'] ?> members</h2> 
+            
+            
+            <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Members</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    global $users;
+                    foreach ($users as $user): ?>
+                    
+                    <tr>
+                        <th><?php echo $user['user_name'] ?></th>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+            </table>
+
+            <h2><?php echo $club_info['club_score'] ?> points</h2> 
+
+            <?php if(check_if_user_in_club($_SESSION['user_name'], $club_info['club_id'])) : ?>
+                <h2>you are in this club</h2>
+                <h2>add leave club button here as well, also present in profile</h2>
+            <?php endif; ?>
+            
+            <?php if($_SESSION['user_name'] == $club_creator) : ?>
+                this button does not work
+                <a class="col-1 btn btn-primary" href="">Delete Club</a>
+            <?php endif; ?>
         </div>
     </div>
 </body>
