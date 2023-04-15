@@ -2,6 +2,8 @@
 session_start();
 
 $club_info = null;
+$club_creator = null;
+$users = null;
 
 require("connect_db.php");
 require("user_db.php");
@@ -13,6 +15,7 @@ if (!$_SESSION["loggedIn"]) {
 } else {
     $club_info = get_club_info($_POST['club_id']);
     $club_creator = get_club_creator($club_info['club_id']);
+    $users = get_users_in_club($club_info['club_id']);
     if($_SESSION['user_name'] == $club_creator) {
         echo "you created this club";
     }
@@ -50,6 +53,26 @@ if (!$_SESSION["loggedIn"]) {
             
             <h2><?php echo $club_info['club_description'] ?></h2>
             <h2><?php echo $club_info['num_members'] ?> members</h2> 
+            
+            
+            <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Members</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                    global $users;
+                    foreach ($users as $user): ?>
+                    
+                    <tr>
+                        <th><?php echo $user['user_name'] ?></th>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+            </table>
+
             <h2><?php echo $club_info['club_score'] ?> points</h2> 
 
             <?php if(check_if_user_in_club($_SESSION['user_name'], $club_info['club_id'])) : ?>
