@@ -220,4 +220,16 @@ function get_users_in_club($club_id){
     return $users;
 }
 
+function filter_club_by_query($query_search) {
+    global $db;
+
+    $query = "SELECT * FROM club WHERE club_title LIKE CONCAT( '%', :query_search, '%')";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':query_search', $query_search);
+    $statement->execute();
+    $clubs = $statement->fetchAll();
+    $statement->closeCursor();
+    return $clubs;
+}
+
 ?>

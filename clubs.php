@@ -22,26 +22,34 @@ if (!$_SESSION["loggedIn"]) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     echo "post request";
-    echo $_POST['club_id'];
+    echo is_null($_POST['club_id']);
     // if incoming request is a post request and the form is the join club form
     // if (!empty($_POST['join_club_btn'])) { how do i check this?
     //     echo "join club";
-    if (!check_if_user_in_club($_SESSION["user_name"], $_POST['club_id'])) {
-        $isSuccess = join_club($_SESSION["user_name"], $_POST['club_id']);
-        if ($isSuccess) {
-            echo "Congratulations, you have joined the club:";
-            echo $_POST['club_id'];
-            // header("Location: index.php");
-            $clubs = get_all_clubs(); // to update num_members after joining club
+    if(!is_null($_POST['club_id'])) {
+        echo "join club clicked";
+        if (!check_if_user_in_club($_SESSION["user_name"], $_POST['club_id'])) {
+            $isSuccess = join_club($_SESSION["user_name"], $_POST['club_id']);
+            if ($isSuccess) {
+                echo "Congratulations, you have joined the club:";
+                echo $_POST['club_id'];
+                // header("Location: index.php");
+                $clubs = get_all_clubs(); // to update num_members after joining club
+            }
+            else {
+                echo "There was an error joining the club";
+            }
+        } else {
+            echo "You have already joined this club";
         }
-        else {
-            echo "There was an error joining the club";
-        }
-    } else {
-        echo "You have already joined this club";
     }
+    
 
     // }
+    if(!empty($_POST['clubQuery']) && ($_POST['clubQuery'] == "Search")) {
+        echo "search clicked";
+        $clubs = filter_club_by_query($_POST['club_query']);
+    }
 }
 
 ?>
@@ -72,6 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="row d-flex justify-content-end">
                 <a class="col-1 btn btn-primary" href="create_new_club.php">Create Club</a>
             </div>
+
+            <form action="clubs.php" method="post">
+                <div class="input-group">
+                    <input class="mx-2" type="text" name="club_query"/>
+                    <input type="submit" name="clubQuery" value="Search"/>
+                </div>
+            </form>
+
             <?php
                 global $clubs;
                 global $user_clubs;
