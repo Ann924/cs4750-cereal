@@ -17,6 +17,7 @@ if (!$_SESSION["loggedIn"]) {
     $user_email = get_user_email($_SESSION['user_name']);
     $user_bookmarks = get_all_bookmarks();
     $user_clubs = get_clubs_by_user($_SESSION["user_name"]);
+    $user_cereals = get_cereals_by_user();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -177,6 +178,86 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <h5 class="modal-title">
                                             Are you sure you want to unbookmark
                                             <?php echo $bookmark['name']; ?>?
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" name="deleteBookmarkBtn" value="Delete Bookmark"
+                                        class="btn btn-danger">Yes</button>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                <?php endforeach ?>
+            </div>
+        </div>
+
+        <div class="row mt-3 d-flex justify-content-center align-items-center">
+            <div class="card col-md-10 d-flex border border-dark bg-light">
+                <h3 class="row mt-3 justify-content-center text-center">Created Cereals</h3>
+                <?php
+                global $user_cereals;
+                foreach ($user_cereals as $cereal): ?>
+                    <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
+                        <div class="card-body row">
+                            <div class="col-4">
+                                <div class="row mb-2">Display photo:</div>
+                                <div class="row mb-2">Photo goes here</div>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-title row mb-2">
+                                    <a class="col" href="#"
+                                        onclick="document.forms['cereal<?php echo $cereal['cereal_id'] ?>'].submit();">
+                                        <h3>
+                                            <?php echo get_cereal_info($cereal['cereal_id'])['name'] ?>
+                                        </h3>
+                                    </a>
+                                    <div class="col-1">
+                                        <a class="col" href="#"
+                                            onclick="document.forms['edit_cereal<?php echo $cereal['cereal_id'] ?>'].submit();"
+                                            style="color: rgb(64,64,64);">
+                                            <i type="button" class="fas fa-edit"></i>
+                                        </a>
+                                    </div>
+                                    <div class="col-1">
+                                        <i type="button" class="fa fa-trash" data-toggle="modal"
+                                            data-target="#deleteBookmarkModal<?php echo $cereal['cereal_id'] ?>"></i>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                <div>
+                                        <?php echo get_cereal_nutrition($cereal['cereal_id'])['calories'] ?> cal /
+                                        serving
+                                    </div>
+                                    <div> Serving size:
+                                        <?php echo get_cereal_nutrition($cereal['cereal_id'])['serving_size'] ?> oz.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form name="cereal<?php echo $cereal['cereal_id']; ?>" action="cereal.php" method="post">
+                        <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
+                    </form>
+
+                    <form name="edit_cereal<?php echo $cereal['cereal_id']; ?>" action="edit_cereal.php" method="post">
+                        <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
+                    </form>
+
+                    <form name="deleteBookmark<?php echo $cereal['cereal_id']; ?>" action="profile.php" method="POST">
+                        <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
+                        <div class="modal fade" id="deleteBookmarkModal<?php echo $cereal['cereal_id'] ?>" tabindex="-1"
+                            role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">
+                                            Are you sure you want to unbookmark
+                                            <?php echo $cereal['name']; ?>?
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>

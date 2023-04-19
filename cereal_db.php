@@ -147,6 +147,19 @@ function get_cereal_nutrition($cereal_id)
     return $cereal_nutrition;
 }
 
+function get_cereals_by_user()
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "SELECT * FROM cereal_info NATURAL JOIN creates_cereal WHERE user_name = :user_name";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':user_name', $_SESSION['user_name']);
+    $statement->execute();
+    $cereals = $statement->fetchAll();
+    $statement->closeCursor();
+    return $cereals;
+}
+
 function get_cereal_upvotes($cereal_id){
     global $db; //use global db from connect-db.php
 
