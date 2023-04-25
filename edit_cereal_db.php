@@ -2,20 +2,45 @@
 
 function updateCereal($name, $manufacturer, $cereal_id, $type, $serving_size, $calories, $protein, $fat, $sugars, $vitamins, $sodium, $fiber, $carbohydrate, $potassium)
 {
+    $old_name = getOldCerealName($cereal_id);
+    updateCerealName($old_name, $name); // NOTE: new "name" is updated in cereal_info via foreign key constaint
+    updateCerealInfo($cereal_id, $type);
     updateManufacturer($name, $manufacturer);
-    updateCerealInfo($cereal_id, $name, $type);
     updateNutritionInfo($cereal_id, $serving_size, $calories, $protein, $fat, $sugars, $vitamins, $sodium, $fiber, $carbohydrate, $potassium);
 }
 
-function updateCerealInfo($cereal_id, $name, $type)
+function updateCerealInfo($cereal_id, $type)
 {
     global $db;
-    $query = "UPDATE cereal_info set name = :name, type = :type WHERE cereal_id = :cereal_id";
+    $query = "UPDATE cereal_info SET type = :type WHERE cereal_id = :cereal_id";
 
     $statement = $db->prepare($query);
     $statement->bindValue(':cereal_id', $cereal_id);
-    $statement->bindValue(':name', $name);
     $statement->bindValue(':type', $type);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
+function getOldCerealName($cereal_id){
+    global $db;
+    $query = "SELECT name FROM cereal_info WHERE cereal_id = :cereal_id";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+    $cereal_name = $statement->fetchColumn();
+    $statement->closeCursor();
+
+    return $cereal_name;
+}
+
+function updateCerealName($old_name, $new_name){
+    global $db;
+    $query = "UPDATE cereal_manufacturer SET name = :new_name WHERE name = :old_name";
+
+    $statement = $db->prepare($query);
+    $statement->bindValue(':new_name', $new_name);
+    $statement->bindValue(':old_name', $old_name);
     $statement->execute();
     $statement->closeCursor();
 }
