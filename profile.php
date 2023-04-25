@@ -30,6 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: profile.php"); // reload page so new list of bookmarks can be fetched
     }
 
+    if (!empty($_POST['deleteCerealBtn']) && ($_POST['deleteCerealBtn'] == "Delete Cereal")) {
+        delete_cereal($_POST['cereal_id']);
+        header("Location: profile.php"); // reload page so new list of bookmarks can be fetched
+    }
+
     echo "post request";
     echo $_POST['club_id'];
     // if incoming request is a post request and the form is the join club form
@@ -225,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                     <div class="col-1">
                                         <i type="button" class="fa fa-trash" data-toggle="modal"
-                                            data-target="#deleteBookmarkModal<?php echo $cereal['cereal_id'] ?>"></i>
+                                            data-target="#deleteCerealModal<?php echo $cereal['cereal_id'] ?>"></i>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
@@ -248,15 +253,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
                     </form>
 
-                    <form name="deleteBookmark<?php echo $cereal['cereal_id']; ?>" action="profile.php" method="POST">
+                    <form name="deleteCereal<?php echo $cereal['cereal_id']; ?>" action="profile.php" method="POST">
                         <input type="hidden" name="cereal_id" value="<?php echo $cereal['cereal_id']; ?>" />
-                        <div class="modal fade" id="deleteBookmarkModal<?php echo $cereal['cereal_id'] ?>" tabindex="-1"
+                        <div class="modal fade" id="deleteCerealModal<?php echo $cereal['cereal_id'] ?>" tabindex="-1"
                             role="dialog">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title">
-                                            Are you sure you want to unbookmark
+                                            Are you sure you want to delete cereal
                                             <?php echo $cereal['name']; ?>?
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -264,7 +269,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </button>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" name="deleteBookmarkBtn" value="Delete Bookmark"
+                                        <button type="submit" name="deleteCerealBtn" value="Delete Cereal"
                                         class="btn btn-danger">Yes</button>
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
                                     </div>

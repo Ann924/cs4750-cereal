@@ -217,4 +217,83 @@ function vote_cereal($cereal_id, $vote_value) {
     }
     $statement->closeCursor();
 }
+
+// DELETE CEREAL FUNCTIONS
+
+function delete_cereal($cereal_id)
+{
+    delete_cereal_manufacturer($cereal_id);  // NOTE: This auto-deletes from cereal_info via FK constraint
+    delete_cereal_bookmarks($cereal_id);
+    delete_cereal_votes($cereal_id);
+    delete_creates_cereal($cereal_id);
+    delete_cereal_nutrition($cereal_id);
+    delete_cereal_comments($cereal_id);
+}
+
+function delete_cereal_manufacturer($cereal_id)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "DELETE FROM cereal_manufacturer WHERE name = (SELECT name FROM cereal_info WHERE cereal_id = :cereal_id);";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
+function delete_cereal_bookmarks($cereal_id)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "DELETE FROM bookmarks WHERE cereal_id = :cereal_id;";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
+function delete_cereal_votes($cereal_id)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "DELETE FROM vote WHERE cereal_id = :cereal_id;";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
+function delete_creates_cereal($cereal_id)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "DELETE FROM creates_cereal WHERE cereal_id = :cereal_id;";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
+function delete_cereal_nutrition($cereal_id)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "DELETE FROM nutritional_statement WHERE cereal_id = :cereal_id;";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
+function delete_cereal_comments($cereal_id)
+{
+    global $db; //use global db from connect-db.php
+
+    $query = "DELETE FROM comment WHERE cereal_id = :cereal_id;";
+    $statement = $db->prepare($query);
+    $statement->bindValue(':cereal_id', $cereal_id);
+    $statement->execute();
+    $statement->closeCursor();
+}
+
 ?>
