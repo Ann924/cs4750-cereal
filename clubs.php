@@ -87,7 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </form>
                 </div>
                 <div class="col justify-content-end d-inline-flex align-items-center">
-                    <a class="col-3 btn btn-primary" href="create_new_club.php">Create Club</a>
+                    <a class="col-4 btn btn-primary" href="create_new_club.php">
+                        <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create Club
+                    </a>
                 </div>
             </div>
             <div class="card col-md-10 d-flex border border-dark bg-light">
