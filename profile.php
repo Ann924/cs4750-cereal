@@ -103,6 +103,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="card col-md-10 d-flex border border-dark bg-light">
                 <h3 class="row mt-3 justify-content-center text-center">Bookmarks</h3>
+                <?php if (!$user_bookmarks): ?>
+                    <p class="text-center my-3">No cereals bookmarked</p>
+                <?php endif; ?>
                 <?php
                 global $user_bookmarks;
                 foreach ($user_bookmarks as $bookmark): ?>
@@ -206,6 +209,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="card col-md-10 d-flex border border-dark bg-light">
                 <h3 class="row mt-3 justify-content-center text-center">Created Cereals</h3>
+                <?php if (!$user_cereals): ?>
+                    <p class="text-center my-3">No created cereals</p>
+                <?php endif; ?>
                 <?php
                 global $user_cereals;
                 foreach ($user_cereals as $cereal): ?>
@@ -286,6 +292,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="card col-md-10 d-flex border border-dark bg-light">
                 <h3 class="row mt-3 justify-content-center text-center">Clubs</h3>
+                <?php if (!$user_clubs): ?>
+                    <p class="text-center my-3">No clubs joined</p>
+                <?php endif; ?>
                 <?php
                 global $user_clubs; foreach ($user_clubs as $club): ?>
                     <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
@@ -338,6 +347,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="row mt-3 d-flex justify-content-center align-items-center">
             <div class="card col-md-10 d-flex border border-dark bg-light">
                 <h3 class="row mt-3 justify-content-center text-center">Your Comments</h3>
+                <?php if (!$user_comments): ?>
+                    <p class="text-center my-3">No comments written</p>
+                <?php endif; ?>
                 <?php
                 global $user_comments;
                 foreach ($user_comments as $comment): ?>

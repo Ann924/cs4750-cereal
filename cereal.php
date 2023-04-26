@@ -138,6 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </form>
                     </div>
                 </div>
+                <?php if (!$comments): ?>
+                    <p class="text-center my-3">No comments found - get us started by sharing your thoughts!</p>
+                <?php endif; ?>
                 <?php
                 global $comments;
                 foreach ($comments as $comment): ?>
@@ -185,7 +188,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                             </button>
                                                         </div>
                                                         <div class="modal-body text-center">
-                                                            <p><label>Comment: </label></p>
                                                             <textarea name="text" rows="3" cols="50"><?php echo $comment['text'] ?></textarea>
                                                         </div>
                                                         <div class="modal-footer">
@@ -214,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                             </button>
                                                         </div>
                                                         <div class="modal-body text-center">
-                                                            <p><?php echo $comment['text'] ?> (Last Updated: <?php echo $comment['date'] ?>)</p>
+                                                            <p><?php echo $comment['text'] ?></p>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="submit" name="deleteCommentBtn" value="Delete Comment"
