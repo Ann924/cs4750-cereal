@@ -25,15 +25,16 @@ if (!$_SESSION["loggedIn"]) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $isSuccess = leave_club($_SESSION["user_name"], $_POST['club_id_to_leave']);
-    if ($isSuccess) {
-        echo "Congratulations, you have left club:";
-        echo $_POST['club_id_to_leave'];
-        // header("Location: index.php");
-        $user_clubs = get_clubs_by_user($_SESSION["user_name"]);
-    } else {
-        echo "There was an error leaving the club";
-    }
+    // echo $_POST['club_id_to_leave'];
+    // $isSuccess = leave_club($_SESSION["user_name"], $_POST['club_id_to_leave']);
+    // if ($isSuccess) {
+    //     echo "Congratulations, you have left club:";
+    //     echo $_POST['club_id_to_leave'];
+    //     // header("Location: index.php");
+    //     $user_clubs = get_clubs_by_user($_SESSION["user_name"]);
+    // } else {
+    //     echo "There was an error leaving the club";
+    // }
 }
 
 ?>
@@ -62,17 +63,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <?php echo $club_info['club_title'] ?>
             </h3>
             <p class="text-secondary text-center">Created by: <?php echo $club_creator ?></p>
+            <p class="text-success text-center">Points: <?php echo $club_info['club_score'] ?></p>
         </div>
         <div class="row mt-1 d-flex justify-content-center">
             <div class="col-8">
                 <h2><?php echo $club_info['club_description'] ?></h2>
 
-                <h2><?php echo $club_info['club_score'] ?> points</h2> 
-
                 <?php if(check_if_user_in_club($_SESSION['user_name'], $club_info['club_id'])) : ?>
-                    <h2>you are in this club</h2>
-                    <h2>add leave club button here as well, also present in profile</h2>
-
                     <button class="btn btn-primary" name="leave_club_btn"
                         onclick="document.forms['leave_club<?php echo $club['club_id'] ?>'].submit();">
                         <h5>
@@ -80,16 +77,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <?php echo $club['club_title'] ?>
                         </h5>
                     </button>
-                    <form name="leave_club<?php echo $club['club_id'] ?>" action="profile.php" method="post">
-                        <input type="hidden" name="club_id_to_leave" value="<?php echo $club['club_id']; ?>" />
-                    </form>
-                <?php endif; ?>
-
-                
-                
-                <?php if($_SESSION['user_name'] == $club_creator) : ?>
-                    this button does not work
-                    <a class="col-1 btn btn-primary" href="">Delete Club</a>
                 <?php endif; ?>
             </div>
             <div class="col-4">
@@ -111,6 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </tbody>
                 </table>
             </div>
+            <!-- <form name="leave_club<?php echo $club['club_id'] ?>" action="clubs.php" method="post">
+                <input type="hidden" name="club_id_to_leave" value="<?php echo $club['club_id']; ?>" />
+            </form> -->
         </div>
     </div>
 </body>

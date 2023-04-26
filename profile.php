@@ -67,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>
         Cereal
     </title>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
@@ -312,7 +313,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </h5>
                             </div>
                             <div class="row justify-content-end">
-                                <div class="col-2 justify-content-end">
+                                <div class="col-3 justify-content-end">
                                     <div class="row justify-content-end">
                                         <p class="col justify-content-end">
                                             <?php echo $club['num_members'] ?> members
@@ -323,14 +324,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </div>
                                 </div>
                             </div>
-                            <div class="row justify-content-center">
-                                <button class="btn btn-primary" name="leave_club_btn"
-                                    onclick="document.forms['leave_club<?php echo $club['club_id'] ?>'].submit();">
-                                    <h5>
-                                        Leave
-                                        <?php echo $club['club_title'] ?>
-                                    </h5>
-                                </button>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-3 d-flex justify-content-center">
+                                    <button class="btn btn-danger" name="leave_club_btn"
+                                        onclick="document.forms['leave_club<?php echo $club['club_id'] ?>'].submit();">
+                                        <h5>
+                                            Leave <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                        </h5>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

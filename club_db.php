@@ -116,10 +116,10 @@ function check_if_user_in_club($user_name, $club_id)
     $success = $statement->execute();
 
     if ($statement->fetch()) {
-        echo "user is in club";
+        // echo "user is in club";
         return TRUE;
     }
-    echo "user is not in club";
+    // echo "user is not in club";
     return FALSE;
 }
 

@@ -89,11 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="col justify-content-end d-inline-flex align-items-center">
                     <a class="col-3 btn btn-primary" href="create_new_club.php">Create Club</a>
                 </div>
-                
             </div>
-
-            
-
             <?php
                 global $clubs;
                 global $user_clubs;
@@ -110,10 +106,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     </a>
                                 </div>
                                 <div class="col d-flex justify-content-end">
-                                    <button class="btn btn-primary mx-3 d-inline-flex align-items-center" name="join_club_btn"
-                                    onclick="document.forms['join_club<?php echo $club['club_id'] ?>'].submit();">
-                                        Join&nbsp;&nbsp;<i class="fa fa-user-plus my-0" aria-hidden="true"></i>
-                                    </button>
+                                    <?php if(!check_if_user_in_club($_SESSION['user_name'], $club['club_id'])) : ?>
+                                        <button class="btn btn-primary mx-3 d-inline-flex align-items-center" name="join_club_btn"
+                                        onclick="document.forms['join_club<?php echo $club['club_id'] ?>'].submit();">
+                                            Join&nbsp;&nbsp;<i class="fa fa-user-plus my-0" aria-hidden="true"></i>
+                                        </button>
+                                    <?php else: ?>
+                                        <button class="btn btn-secondary mx-3 d-inline-flex align-items-center" disabled>
+                                            Already joined&nbsp;&nbsp;<i class="fa fa-check-circle my-0" aria-hidden="true"></i>
+                                        </button>
+                                        
+
+                                    <?php endif; ?>
                                 </div>
                                 
                             </div>
