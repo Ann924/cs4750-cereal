@@ -59,11 +59,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if(!empty($_POST['filterHot']) && ($_POST['filterHot'] == "Hot")) {
+    if(!empty($_POST['filterHot']) && ($_POST['filterHot'] == "Hot cereals")) {
         $cereals = filter_cereal_type('H');
     }
 
-    if(!empty($_POST['filterCold']) && ($_POST['filterCold'] == "Cold")) {
+    if(!empty($_POST['filterCold']) && ($_POST['filterCold'] == "Cold cereals")) {
         $cereals = filter_cereal_type('C');
     }
     
@@ -113,31 +113,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="submit" name="cerealQuery" value="Search"/>
                         </div>
                     </form>
+                    <p>Results sorted high to low by default</p>
                     <form action="cereals.php" method="post">
+                        <input type="submit" name="sortVotes" value="Votes"/>
                         <label>Ascending?</label>
                         <input type="checkbox" name="sortVoteOrd" value="Asc"/>
-                        <input type="submit" name="sortVotes" value="Votes"/>
                     </form>
                     <form action="cereals.php" method="post">
+                        <input type="submit" name="sortCalories" value="Calories"/>
                         <label>Ascending?</label>
                         <input type="checkbox" name="sortCaloriesOrd" value="Asc"/>
-                        <input type="submit" name="sortCalories" value="Calories"/>
                     </form>
                     <form action="cereals.php" method="post">
+                        <input type="submit" name="sortProtein" value="Protein"/>
                         <label>Ascending?</label>
                         <input type="checkbox" name="sortProteinOrd" value="Asc"/>
-                        <input type="submit" name="sortProtein" value="Protein"/>
                     </form>
                     <form action="cereals.php" method="post">
+                        <input type="submit" name="sortFat" value="Fat"/>
                         <label>Ascending?</label>
                         <input type="checkbox" name="sortFatOrd" value="Asc"/>
-                        <input type="submit" name="sortFat" value="Fat"/>
                     </form>
                     <form action="cereals.php" method="post">
-                        <input type="submit" name="filterHot" value="Hot"/>
+                        <input type="submit" name="filterHot" value="Hot cereals"/>
                     </form>
                     <form action="cereals.php" method="post">
-                        <input type="submit" name="filterCold" value="Cold"/>
+                        <input type="submit" name="filterCold" value="Cold cereals"/>
                     </form>
                 </div>
             </div>
