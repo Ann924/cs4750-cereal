@@ -5,6 +5,7 @@ require_once("connect_db.php");
 require_once("user_db.php");
 require_once("cereal_db.php");
 require_once("club_db.php");
+require_once("comment_db.php");
 
 $user_email = null;
 $user_bookmarks = null;
@@ -18,6 +19,7 @@ if (!$_SESSION["loggedIn"]) {
     $user_bookmarks = get_all_bookmarks();
     $user_clubs = get_clubs_by_user($_SESSION["user_name"]);
     $user_cereals = get_cereals_by_user();
+    $user_comments = get_comments_by_user();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -328,6 +330,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </form>
                     <form name="club<?php echo $club['club_id']; ?>" action="club.php" method="post">
                         <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
+                    </form>
+                <?php endforeach ?>
+            </div>
+        </div>
+
+        <div class="row mt-3 d-flex justify-content-center align-items-center">
+            <div class="card col-md-10 d-flex border border-dark bg-light">
+                <h3 class="row mt-3 justify-content-center text-center">Your Comments</h3>
+                <?php
+                global $user_comments;
+                foreach ($user_comments as $comment): ?>
+                    <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
+                        <div class="card-body row">
+                            <div class="col-4">
+                                <div class="row mb-2">Display photo:</div>
+                                <div class="row mb-2">Photo goes here</div>
+                            </div>
+                            <div class="col-8">
+                                <div class="card-title row mb-2">
+                                    <a class="col" href="#"
+                                        onclick="document.forms['cereal<?php echo $comment['cereal_id'] ?>'].submit();">
+                                        <h3>
+                                            <?php echo get_cereal_info($comment['cereal_id'])['name'] ?>
+                                        </h3>
+                                    </a>
+                                </div>
+                                <div class="row mb-2">
+                                    <div>
+                                        <?php echo $comment['text'] ?>
+                                    </div>
+                                    <div>
+                                        Last Updated: <?php echo $comment['date'] ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form name="cereal<?php echo $comment['cereal_id']; ?>" action="cereal.php" method="post">
+                        <input type="hidden" name="cereal_id" value="<?php echo $comment['cereal_id']; ?>" />
                     </form>
                 <?php endforeach ?>
             </div>

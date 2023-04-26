@@ -30,6 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $comments = get_all_comments($_POST['cereal_id']);
     }
+
+    if (!empty($_POST['editCommentBtn']) && ($_POST['editCommentBtn'] == "Edit Comment")) {
+        // gets current date
+        $date = date('Y-m-d');
+
+        update_comment($_POST['cereal_id'], $_POST['comment_id'], $_POST['text'], $date);
+        $comments = get_all_comments($_POST['cereal_id']);
+    }
+
+    if (!empty($_POST['deleteCommentBtn']) && ($_POST['deleteCommentBtn'] == "Delete Comment")) {
+        delete_comment($_POST['cereal_id'], $_POST['comment_id']);
+        $comments = get_all_comments($_POST['cereal_id']);
+    }
 }
 
 ?>
@@ -144,6 +157,75 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <p>
                                         <?php echo $comment['text'] ?>
                                     </p>
+                                    <?php if($_SESSION['user_name'] == $comment['user_name']): ?>
+                                        <div class="card-title row mb-2 d-flex justify-content-end">
+                                            <div class="col-1">
+                                            <i type="button" class="fas fa-edit" data-toggle="modal"
+                                                data-target="#editCommentModal<?php echo $comment['comment_id'] ?>"></i>
+                                            </div>
+                                            <div class="col-1">
+                                                <i type="button" class="fa fa-trash" data-toggle="modal"
+                                                    data-target="#deleteCommentModal<?php echo $comment['comment_id'] ?>"></i>
+                                            </div>
+                                        </div>
+
+                                        <form name="editComment<?php echo $comment['comment_id']; ?>" action="cereal.php" method="POST">
+                                            <input type="hidden" name="cereal_id" value="<?php echo $comment['cereal_id']; ?>" />
+                                            <input type="hidden" name="comment_id" value="<?php echo $comment['comment_id']; ?>" />
+                                            <div class="modal fade" id="editCommentModal<?php echo $comment['comment_id'] ?>" tabindex="-1"
+                                                role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">
+                                                                Edit Comment
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-center">
+                                                            <p><label>Comment: </label></p>
+                                                            <textarea name="text" rows="3" cols="50"><?php echo $comment['text'] ?></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            <button type="submit" name="editCommentBtn" value="Edit Comment"
+                                                                class="btn btn-primary">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                        <form name="deleteComment<?php echo $comment['comment_id']; ?>" action="cereal.php" method="POST">
+                                            <input type="hidden" name="cereal_id" value="<?php echo $comment['cereal_id']; ?>" />
+                                            <input type="hidden" name="comment_id" value="<?php echo $comment['comment_id']; ?>" />
+                                            <div class="modal fade" id="deleteCommentModal<?php echo $comment['comment_id'] ?>" tabindex="-1"
+                                                role="dialog">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">
+                                                                Are you sure you want to delete the following comment?
+                                                            </h5>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body text-center">
+                                                            <p><?php echo $comment['text'] ?> (Last Updated: <?php echo $comment['date'] ?>)</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="submit" name="deleteCommentBtn" value="Delete Comment"
+                                                            class="btn btn-danger">Yes</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
