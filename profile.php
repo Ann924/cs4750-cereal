@@ -67,6 +67,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>
         Cereal
     </title>
+    <!-- <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"> -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
@@ -80,20 +82,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="card col-md-10 d-flex border border-dark bg-light">
                 <h3 class="row mt-3 justify-content-center text-center">Information</h3>
                 <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
-                    <div class="row card-body">
+                    <div class="row card-body justify-content-center">
                         <div class="col">
-                            <div class="row">Username:
-                                <?php echo $_SESSION['user_name']; ?>
-                            </div>
-                            <div class="row">Email:
-                                <?php echo $user_email; ?>
-                            </div>
-                            <div class="row">Date Joined: PLACEHOLDER</div>
+                            <h4>Username:<?php echo $_SESSION['user_name']; ?></h4>
                         </div>
                         <div class="col">
-                            <div class="row">From: PLACEHOLDER</div>
-                            <div class="row">Favorite Cereal: PLACEHOLDER</div>
-                            <div class="row">Fun Fact: PLACEHOLDER</div>
+                            <h4>Email:<?php echo $user_email; ?></h4>
                         </div>
                     </div>
                 </div>
@@ -111,11 +105,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 foreach ($user_bookmarks as $bookmark): ?>
                     <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
                         <div class="card-body row">
-                            <div class="col-4">
+                            <!-- <div class="col-4">
                                 <div class="row mb-2">Display photo:</div>
                                 <div class="row mb-2">Photo goes here</div>
-                            </div>
-                            <div class="col-8">
+                            </div> -->
+                            <div class="col">
                                 <div class="card-title row mb-2">
                                     <a class="col" href="#"
                                         onclick="document.forms['cereal<?php echo $bookmark['cereal_id'] ?>'].submit();">
@@ -217,11 +211,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 foreach ($user_cereals as $cereal): ?>
                     <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
                         <div class="card-body row">
-                            <div class="col-4">
+                            <!-- <div class="col-4">
                                 <div class="row mb-2">Display photo:</div>
                                 <div class="row mb-2">Photo goes here</div>
-                            </div>
-                            <div class="col-8">
+                            </div> -->
+                            <div class="col">
                                 <div class="card-title row mb-2">
                                     <a class="col" href="#"
                                         onclick="document.forms['cereal<?php echo $cereal['cereal_id'] ?>'].submit();">
@@ -300,11 +294,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
                         <div class="card-body row">
                             <div class="d-flex card-title row text-center">
-                                <a href="#" onclick="document.forms['club<?php echo $club['club_id'] ?>'].submit();">
-                                    <h3>
-                                        <?php echo $club['club_title'] ?>
-                                    </h3>
-                                </a>
+                                <div class="col"></div>
+                                <div class="col">
+                                    <a href="#" onclick="document.forms['club<?php echo $club['club_id'] ?>'].submit();" class="text-decoration-none">
+                                        <h3>
+                                            <?php echo $club['club_title'] ?>
+                                        </h3>
+                                    </a>
+                                </div>
+                                <div class="col d-flex justify-content-end">
+                                    <button class="btn btn-danger mx-3 d-inline-flex align-items-center" name="leave_club_btn" 
+                                        onclick="document.forms['leave_club<?php echo $club['club_id'] ?>'].submit();">
+                                        Leave&nbsp;&nbsp;<i class="fa fa-window-close" aria-hidden="true"></i>
+                                    </button>
+                                </div>
                             </div>
                             <div class="row">
                                 <h5>
@@ -312,8 +315,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </h5>
                             </div>
                             <div class="row justify-content-end">
-                                <div class="col-2 justify-content-end">
-                                    <div class="row justify-content-end">
+                                <div class="col-3 justify-content-end">
+                                    <div class="row justify-content-end text-secondary">
                                         <p class="col justify-content-end">
                                             <?php echo $club['num_members'] ?> members
                                         </p>
@@ -322,15 +325,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         </p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row justify-content-center">
-                                <button class="btn btn-primary" name="leave_club_btn"
-                                    onclick="document.forms['leave_club<?php echo $club['club_id'] ?>'].submit();">
-                                    <h5>
-                                        Leave
-                                        <?php echo $club['club_title'] ?>
-                                    </h5>
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -355,11 +349,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 foreach ($user_comments as $comment): ?>
                     <div class="row card mx-3 my-3 justify-content-center font-weight-bold">
                         <div class="card-body row">
-                            <div class="col-4">
+                            <!-- <div class="col-4">
                                 <div class="row mb-2">Display photo:</div>
                                 <div class="row mb-2">Photo goes here</div>
-                            </div>
-                            <div class="col-8">
+                            </div> -->
+                            <div class="col">
                                 <div class="card-title row mb-2">
                                     <a class="col" href="#"
                                         onclick="document.forms['cereal<?php echo $comment['cereal_id'] ?>'].submit();">

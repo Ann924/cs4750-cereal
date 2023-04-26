@@ -100,10 +100,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="container-fluid">
         <div class="row mt-3 d-flex justify-content-center">
-            <div class="row d-flex justify-content-end mt-3"><a class="col-3 btn btn-primary"
+            <div class="row d-flex justify-content-end mt-3 mb-3"><a class="col-3 btn btn-primary"
                     href="create_new_cereal.php">Create Cereal</a></div>
-            <div class="row d-flex justify-content-end mt-3"><a class="col-3 btn btn-primary"
-                    href="clubs.php">Browse Cereal Clubs</a></div>
             <div class="col">
                 <div class="row border border-dark bg-light mx-2 p-4">
                     <h4>Search/Filter</h4>
@@ -148,11 +146,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                 foreach ($cereals as $cereal): ?>
                     <div class="row card mt-3 mb-3 mx-3 justify-content-center font-weight-bold">
                         <div class="card-body row">
-                            <div class="col-4">
+                            <!-- <div class="col-4">
                                 <div class="row mb-2">Display photo:</div>
                                 <div class="row mb-2">Photo goes here</div>
-                            </div>
-                            <div class="col-8">
+                            </div> -->
+                            <div class="col">
                                 <div class="card-title row mb-2">
                                     <a class="col" href="#"
                                         onclick="document.forms['cereal<?php echo $cereal['cereal_id'] ?>'].submit();">

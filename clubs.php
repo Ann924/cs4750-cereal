@@ -77,29 +77,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <h3 class="text-center">
                 Clubs
             </h3>
-            <div class="row d-flex justify-content-end">
-                <a class="col-1 btn btn-primary" href="create_new_club.php">Create Club</a>
-            </div>
-
-            <form action="clubs.php" method="post">
-                <div class="input-group">
-                    <input class="mx-2" type="text" name="club_query"/>
-                    <input type="submit" name="clubQuery" value="Search"/>
+            <div class="row">
+                <div class="col d-flex justify-content-start">
+                    <form action="clubs.php" method="post">
+                        <div class="input-group">
+                            <input class="mx-2 form-control" type="text" name="club_query" placeholder="enter key words here" size="50"/>
+                            <input type="submit" class="btn btn-primary" name="clubQuery" value="Search"/>
+                        </div>
+                    </form>
                 </div>
-            </form>
-
+                <div class="col justify-content-end d-inline-flex align-items-center">
+                    <a class="col-3 btn btn-primary" href="create_new_club.php">Create Club</a>
+                </div>
+            </div>
+            <div class="card col-md-10 d-flex border border-dark bg-light">
             <?php
                 global $clubs;
                 global $user_clubs;
                 foreach ($clubs as $club): ?>
                     <div class="row card mt-3 mb-3 mx-3 justify-content-center font-weight-bold">
-                        <div class="card-body row">
+                        <div class="card-body">
                             <div class="d-flex card-title row text-center">
-                                <a href="#" onclick="document.forms['club<?php echo $club['club_id'] ?>'].submit();">
-                                    <h3>
-                                        <?php echo $club['club_title'] ?>
-                                    </h3>
-                                </a>
+                                <div class="col"></div>
+                                <div class="col">
+                                    <a href="#" onclick="document.forms['club<?php echo $club['club_id'] ?>'].submit();" class="text-decoration-none">
+                                        <h3>
+                                            <?php echo $club['club_title'] ?>
+                                        </h3>
+                                    </a>
+                                </div>
+                                <div class="col d-flex justify-content-end">
+                                    <?php if(!check_if_user_in_club($_SESSION['user_name'], $club['club_id'])) : ?>
+                                        <button class="btn btn-primary mx-3 d-inline-flex align-items-center" name="join_club_btn"
+                                        onclick="document.forms['join_club<?php echo $club['club_id'] ?>'].submit();">
+                                            Join&nbsp;&nbsp;<i class="fa fa-user-plus my-0" aria-hidden="true"></i>
+                                        </button>
+                                    <?php else: ?>
+                                        <button class="btn btn-secondary mx-3 d-inline-flex align-items-center" disabled>
+                                            Already joined&nbsp;&nbsp;<i class="fa fa-check-circle my-0" aria-hidden="true"></i>
+                                        </button>
+                                        
+
+                                    <?php endif; ?>
+                                </div>
+                                
                             </div>
                             <div class="row">
                                 <h5>
@@ -107,8 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </h5>
                             </div>
                             <div class="row justify-content-end">
-                                <div class="col-2 justify-content-end">
-                                    <div class="row justify-content-end">
+                                <div class="col-3 justify-content-end">
+                                    <div class="row justify-content-end text-secondary">
                                         <p class="col justify-content-end">
                                             <?php echo $club['num_members'] ?> members
                                         </p>
@@ -119,21 +140,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             </div>
                         </div>
-                        <div class="row justify-content-center">
-                            <button class="col btn btn-primary mx-3" name="join_club_btn"
-                                onclick="document.forms['join_club<?php echo $club['club_id'] ?>'].submit();">
-                                <h5>
-                                    Join
-                                    <?php echo $club['club_title'] ?>
-                                </h5>
-                            </button>
-                        </div>
 
-                        <form name="club<?php echo $club['club_id']; ?>" action="club.php" method="post">
+                        <form name="club<?php echo $club['club_id']; ?>" action="club.php" method="post" class="d-none">
                             <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
                         </form>
 
-                        <form name="join_club<?php echo $club['club_id'] ?>" action="clubs.php" method="post">
+                        <form name="join_club<?php echo $club['club_id'] ?>" action="clubs.php" method="post" class="d-none">
                             <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
                         </form>
                     </div>
