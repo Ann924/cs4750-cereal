@@ -6,6 +6,7 @@ require("cereal_db.php");
 require("sorting_cereals_db.php");
 
 $cereals = null;
+$sort_description = "None";
 
 if (!$_SESSION["loggedIn"]) {
     header("Location: login.php");
@@ -25,46 +26,62 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if(!empty($_POST['cerealQuery']) && ($_POST['cerealQuery'] == "Search")) {
         $cereals = filter_by_query($_POST['cereal_query']);
+        $sort_description = $_POST['cereal_query'];
     }
 
     if(!empty($_POST['sortVotes']) && ($_POST['sortVotes'] == "Votes")) {
         if (isset($_POST['sortVoteOrd'])){
             $cereals = sort_by_votes(True);
+            $sort_description = "Votes (Ascending)";
         } else {
             $cereals = sort_by_votes(False);
+            $sort_description = "Votes (Descending)";
         }
     }
 
     if(!empty($_POST['sortCalories']) && ($_POST['sortCalories'] == "Calories")) {
         if (isset($_POST['sortCaloriesOrd'])){
             $cereals = sort_by_calories(True);
+            $sort_description = "Calories (Ascending)";
         } else {
             $cereals = sort_by_calories(False);
+            $sort_description = "Calories (Descending)";
         }
     }
 
     if(!empty($_POST['sortProtein']) && ($_POST['sortProtein'] == "Protein")) {
         if (isset($_POST['sortProteinOrd'])){
             $cereals = sort_by_protein(True);
+            $sort_description = "Protein (Ascending)";
         } else {
             $cereals = sort_by_protein(False);
+            $sort_description = "Protein (Descending)";
         }
     }
 
     if(!empty($_POST['sortFat']) && ($_POST['sortFat'] == "Fat")) {
         if (isset($_POST['sortFatOrd'])){
             $cereals = sort_by_fat(True);
+            $sort_description = "Fat (Ascending)";
         } else {
             $cereals = sort_by_fat(False);
+            $sort_description = "Fat (Descending)";
         }
     }
 
     if(!empty($_POST['filterHot']) && ($_POST['filterHot'] == "Hot cereals")) {
         $cereals = filter_cereal_type('H');
+        $sort_description = "Hot cereals";
     }
 
     if(!empty($_POST['filterCold']) && ($_POST['filterCold'] == "Cold cereals")) {
         $cereals = filter_cereal_type('C');
+        $sort_description = "Cold cereals";
+    }
+
+    if(!empty($_POST['reset']) && ($_POST['reset'] == "Reset")) {
+        $cereals = get_all_cereals();
+        $sort_description = "None";
     }
     
     if(!empty($_POST['upvoteBtn']) && ($_POST['upvoteBtn'] == "Upvote")) {
@@ -100,43 +117,54 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div class="container-fluid">
         <div class="row mt-3 d-flex justify-content-center">
-            <div class="row d-flex justify-content-end mt-3 mb-3"><a class="col-3 btn btn-primary"
-                    href="create_new_cereal.php">Create Cereal</a></div>
+            <div class="row d-flex justify-content-end mt-3 mb-3">
+                <a class="col-3 btn btn-primary" href="create_new_cereal.php">
+                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;Create Cereal 
+                </a>
+            </div>
             <div class="col">
                 <div class="row border border-dark bg-light mx-2 p-4">
                     <h4>Search/Filter</h4>
                     <form action="cereals.php" method="post">
                         <div class="input-group">
-                            <input class="mx-2" type="text" name="cereal_query"/>
-                            <input type="submit" name="cerealQuery" value="Search"/>
+                            <input class="mx-2 form-control" type="text" name="cereal_query" placeholder="enter keywords here"/>
+                            <input type="submit" name="cerealQuery" value="Search" class="btn btn-primary"/>
                         </div>
                     </form>
-                    <p>Results sorted high to low by default</p>
+                    <p class="text-success">Currently sorted/ filtered by: <?php echo $sort_description ?></p>
+                    <p>Click button to sort by the respective attribute.</p>
+                    <p>Results sorted high to low by default.</p>
+                    <p>Select "Ascending?" checkbox to sort low to high.</p>
                     <form action="cereals.php" method="post">
-                        <input type="submit" name="sortVotes" value="Votes"/>
-                        <label>Ascending?</label>
-                        <input type="checkbox" name="sortVoteOrd" value="Asc"/>
+                        <input type="submit" name="sortVotes" value="Votes" class="btn btn-primary col-4"/>
+                        <label class="form-check-label">Ascending?</label>
+                        <input type="checkbox" name="sortVoteOrd" value="Asc" class="form-check-input"/>
                     </form>
                     <form action="cereals.php" method="post">
-                        <input type="submit" name="sortCalories" value="Calories"/>
-                        <label>Ascending?</label>
-                        <input type="checkbox" name="sortCaloriesOrd" value="Asc"/>
+                        <input type="submit" name="sortCalories" value="Calories" class="btn btn-primary col-4"/>
+                        <label class="form-check-label">Ascending?</label>
+                        <input type="checkbox" name="sortCaloriesOrd" value="Asc" class="form-check-input"/>
                     </form>
                     <form action="cereals.php" method="post">
-                        <input type="submit" name="sortProtein" value="Protein"/>
-                        <label>Ascending?</label>
-                        <input type="checkbox" name="sortProteinOrd" value="Asc"/>
+                        <input type="submit" name="sortProtein" value="Protein" class="btn btn-primary col-4"/>
+                        <label class="form-check-label">Ascending?</label>
+                        <input type="checkbox" name="sortProteinOrd" value="Asc" class="form-check-input"/>
                     </form>
                     <form action="cereals.php" method="post">
-                        <input type="submit" name="sortFat" value="Fat"/>
-                        <label>Ascending?</label>
-                        <input type="checkbox" name="sortFatOrd" value="Asc"/>
+                        <input type="submit" name="sortFat" value="Fat" class="btn btn-primary col-4"/>
+                        <label class="form-check-label">Ascending?</label>
+                        <input type="checkbox" name="sortFatOrd" value="Asc" class="form-check-input"/>
+                    </form>
+                    <p>Filter only hot or cold cereals.</p>
+                    <form action="cereals.php" method="post">
+                        <input type="submit" name="filterHot" value="Hot cereals" class="btn btn-primary col-4"/>
                     </form>
                     <form action="cereals.php" method="post">
-                        <input type="submit" name="filterHot" value="Hot cereals"/>
+                        <input type="submit" name="filterCold" value="Cold cereals" class="btn btn-primary col-4"/>
                     </form>
+                    <p>Reset sorts/ filters</p>
                     <form action="cereals.php" method="post">
-                        <input type="submit" name="filterCold" value="Cold cereals"/>
+                        <input type="submit" name="resetCereals" value="Reset" class="btn btn-primary col-4"/>
                     </form>
                 </div>
             </div>
