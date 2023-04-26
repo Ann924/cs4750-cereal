@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="col d-flex justify-content-start">
                     <form action="clubs.php" method="post">
                         <div class="input-group">
-                            <input class="mx-2 form-control" type="text" name="club_query" placeholder="enter key words here"/>
+                            <input class="mx-2 form-control" type="text" name="club_query" placeholder="enter key words here" size="50"/>
                             <input type="submit" class="btn btn-primary" name="clubQuery" value="Search"/>
                         </div>
                     </form>
@@ -90,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <a class="col-3 btn btn-primary" href="create_new_club.php">Create Club</a>
                 </div>
             </div>
+            <div class="card col-md-10 d-flex border border-dark bg-light">
             <?php
                 global $clubs;
                 global $user_clubs;
@@ -127,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </h5>
                             </div>
                             <div class="row justify-content-end">
-                                <div class="col-2 justify-content-end">
+                                <div class="col-3 justify-content-end">
                                     <div class="row justify-content-end text-secondary">
                                         <p class="col justify-content-end">
                                             <?php echo $club['num_members'] ?> members
@@ -139,16 +140,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="row justify-content-end">
-                            <button class="col-3 btn btn-primary mx-3" name="join_club_btn"
-                                onclick="document.forms['join_club<?php echo $club['club_id'] ?>'].submit();">
-                                <h5>
-                                    Join
-                                    <?php echo $club['club_title'] ?>
-                                    <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                </h5>
-                            </button>
-                        </div> -->
 
                         <form name="club<?php echo $club['club_id']; ?>" action="club.php" method="post" class="d-none">
                             <input type="hidden" name="club_id" value="<?php echo $club['club_id']; ?>" />
