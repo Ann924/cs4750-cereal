@@ -85,26 +85,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <label>Nutritional information</label>
                                 <div class="col-6">
                                     <input type="text" class="form-control mt-2" id="serving_size" name="serving size"
-                                        placeholder="serving size">
+                                        placeholder="serving size (oz.)">
                                     <input type="text" class="form-control mt-2" id="calories" name="calories"
-                                        placeholder="calories">
+                                        placeholder="calories (cal)">
                                     <input type="text" class="form-control mt-2" id="protein" name="protein"
-                                        placeholder="protein">
-                                    <input type="text" class="form-control mt-2" id="fat" name="fat" placeholder="fat">
+                                        placeholder="protein (g)">
+                                    <input type="text" class="form-control mt-2" id="fat" name="fat" placeholder="fat (g)">
                                     <input type="text" class="form-control mt-2" id="sugars" name="sugars"
-                                        placeholder="sugars">
+                                        placeholder="sugars (g)">
                                 </div>
                                 <div class="col-6">
                                     <input type="text" class="form-control mt-2" id="vitamins" name="vitamins"
-                                        placeholder="vitamins">
+                                        placeholder="vitamins (%)">
                                     <input type="text" class="form-control mt-2" id="sodium" name="sodium"
-                                        placeholder="sodium">
+                                        placeholder="sodium (mg)">
                                     <input type="text" class="form-control mt-2" id="fiber" name="fiber"
-                                        placeholder="fiber">
+                                        placeholder="fiber (g)">
                                     <input type="text" class="form-control mt-2" id="carbohydrate" name="carbohydrate"
-                                        placeholder="carbohydrate">
+                                        placeholder="carbohydrate (g)">
                                     <input type="text" class="form-control mt-2" id="potassium" name="potassium"
-                                        placeholder="potassium">
+                                        placeholder="potassium (mg)">
                                 </div>
                             </div>
                             <div class="row mx-3 justify-content-center">
