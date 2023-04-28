@@ -188,7 +188,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                             </button>
                                                         </div>
                                                         <div class="modal-body text-center">
-                                                            <textarea name="text" rows="3" cols="50"><?php echo $comment['text'] ?></textarea>
+                                                            <textarea name="text" rows="3" cols="40"><?php echo $comment['text'] ?></textarea>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
