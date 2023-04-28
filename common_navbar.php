@@ -16,7 +16,7 @@
             <div class="row align-items-center">
                 <a href="cereals.php" class="navbar-brand col-4 navbar-nav mx-auto justify-content-center">
                     <h1 class="text-center">
-                        Celebrating Cereal Club
+                        Cereal Celebration
                     </h1>
                 </a>
             </div>
