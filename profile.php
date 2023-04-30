@@ -37,19 +37,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: profile.php"); // reload page so new list of bookmarks can be fetched
     }
 
-    echo "post request";
-    echo $_POST['club_id'];
+    // echo "post request";
+    // echo $_POST['club_id'];
     // if incoming request is a post request and the form is the join club form
     // if (!empty($_POST['join_club_btn'])) { how do i check this?
     //     echo "join club";
     $isSuccess = leave_club($_SESSION["user_name"], $_POST['club_id']);
     if ($isSuccess) {
-        echo "Congratulations, you have left club:";
-        echo $_POST['club_id'];
+        // echo "Congratulations, you have left club:";
+        // echo $_POST['club_id'];
         // header("Location: index.php");
         $user_clubs = get_clubs_by_user($_SESSION["user_name"]);
     } else {
-        echo "There was an error leaving the club";
+        // echo "There was an error leaving the club";
     }
     // }
 

@@ -50,11 +50,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="col-md-8 border border-dark bg-light">
                 <form action="create_new_cereal.php" method="post">
                     <div class="row mt-3 mb-3 mx-3 justify-content-center font-weight-bold">
-                        <div class="col-4">
+                        <!-- <div class="col-4">
                             <div class="row mb-2">Display photo:</div>
                             <div class="row mb-2">Photo goes here</div>
-                        </div>
-                        <div class="col-8">
+                        </div> -->
+                        <div class="col">
                             <div class="row mb-2">
                                 <label for="name">Cereal name</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="cereal name">

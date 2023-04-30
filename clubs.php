@@ -21,26 +21,26 @@ if (!$_SESSION["loggedIn"]) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    echo "post request";
-    echo is_null($_POST['club_id']);
+    // echo "post request";
+    // echo is_null($_POST['club_id']);
     // if incoming request is a post request and the form is the join club form
     // if (!empty($_POST['join_club_btn'])) { how do i check this?
     //     echo "join club";
     if(!is_null($_POST['club_id'])) {
-        echo "join club clicked";
+        // echo "join club clicked";
         if (!check_if_user_in_club($_SESSION["user_name"], $_POST['club_id'])) {
             $isSuccess = join_club($_SESSION["user_name"], $_POST['club_id']);
             if ($isSuccess) {
-                echo "Congratulations, you have joined the club:";
-                echo $_POST['club_id'];
+                // echo "Congratulations, you have joined the club:";
+                // echo $_POST['club_id'];
                 // header("Location: index.php");
                 $clubs = get_all_clubs(); // to update num_members after joining club
             }
             else {
-                echo "There was an error joining the club";
+                // echo "There was an error joining the club";
             }
         } else {
-            echo "You have already joined this club";
+            // echo "You have already joined this club";
         }
     }
     
